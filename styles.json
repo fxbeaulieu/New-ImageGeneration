@@ -1,207 +1,207 @@
 [
   {
     "name": "3D Model",
-    "prompt": "professional 3d model {prompt} . octane render, highly detailed, volumetric, dramatic lighting",
+    "prompt": "professional 3d model <<PROMPT HERE>> . octane render, highly detailed, volumetric, dramatic lighting",
     "negative_prompt": "ugly, deformed, noisy, low poly, blurry, painting"
   },
   {
     "name": "Analog Film",
-    "prompt": "analog film photo {prompt} . faded film, desaturated, 35mm photo, grainy, vignette, vintage, Kodachrome, Lomography, stained, highly detailed, found footage",
+    "prompt": "analog film photo <<PROMPT HERE>> . faded film, desaturated, 35mm photo, grainy, vignette, vintage, Kodachrome, Lomography, stained, highly detailed, found footage",
     "negative_prompt": "painting, drawing, illustration, glitch, deformed, mutated, cross-eyed, ugly, disfigured"
   },
   {
     "name": "Anime",
-    "prompt": "anime artwork {prompt} . anime style, key visual, vibrant, studio anime,  highly detailed",
+    "prompt": "anime artwork <<PROMPT HERE>> . anime style, key visual, vibrant, studio anime,  highly detailed",
     "negative_prompt": "photo, deformed, black and white, realism, disfigured, low contrast"
   },
   {
     "name": "Cinematic",
-    "prompt": "cinematic film still {prompt} . shallow depth of field, vignette, highly detailed, high budget, bokeh, cinemascope, moody, epic, gorgeous, film grain, grainy",
+    "prompt": "cinematic film still <<PROMPT HERE>> . shallow depth of field, vignette, highly detailed, high budget, bokeh, cinemascope, moody, epic, gorgeous, film grain, grainy",
     "negative_prompt": "anime, cartoon, graphic, text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured"
   },
   {
     "name": "Comic Book",
-    "prompt": "comic {prompt} . graphic illustration, comic art, graphic novel art, vibrant, highly detailed",
+    "prompt": "comic <<PROMPT HERE>> . graphic illustration, comic art, graphic novel art, vibrant, highly detailed",
     "negative_prompt": "photograph, deformed, glitch, noisy, realistic, stock photo"
   },
   {
     "name": "Digital Art",
-    "prompt": "concept art {prompt} . digital artwork, illustrative, painterly, matte painting, highly detailed",
+    "prompt": "concept art <<PROMPT HERE>> . digital artwork, illustrative, painterly, matte painting, highly detailed",
     "negative_prompt": "photo, photorealistic, realism, ugly"
   },
   {
     "name": "Enhance",
-    "prompt": "breathtaking {prompt} . award-winning, professional, highly detailed",
+    "prompt": "breathtaking <<PROMPT HERE>> . award-winning, professional, highly detailed",
     "negative_prompt": "ugly, deformed, noisy, blurry, distorted, grainy"
   },
   {
     "name": "Fantasy Art",
-    "prompt": "ethereal fantasy concept art of  {prompt} . magnificent, celestial, ethereal, painterly, epic, majestic, magical, fantasy art, cover art, dreamy",
+    "prompt": "ethereal fantasy concept art of  <<PROMPT HERE>> . magnificent, celestial, ethereal, painterly, epic, majestic, magical, fantasy art, cover art, dreamy",
     "negative_prompt": "photographic, realistic, realism, 35mm film, dslr, cropped, frame, text, deformed, glitch, noise, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, sloppy, duplicate, mutated, black and white"
   },
   {
     "name": "Neon Punk",
-    "prompt": "neonpunk style {prompt} . cyberpunk, vaporwave, neon, vibes, vibrant, stunningly beautiful, crisp, detailed, sleek, ultramodern, magenta highlights, dark purple shadows, high contrast, cinematic, ultra detailed, intricate, professional",
+    "prompt": "neonpunk style <<PROMPT HERE>> . cyberpunk, vaporwave, neon, vibes, vibrant, stunningly beautiful, crisp, detailed, sleek, ultramodern, magenta highlights, dark purple shadows, high contrast, cinematic, ultra detailed, intricate, professional",
     "negative_prompt": "painting, drawing, illustration, glitch, deformed, mutated, cross-eyed, ugly, disfigured"
   },
   {
     "name": "Photographic",
-    "prompt": "cinematic photo {prompt} . 35mm photograph, film, bokeh, professional, 4k, highly detailed",
+    "prompt": "cinematic photo <<PROMPT HERE>> . 35mm photograph, film, bokeh, professional, 4k, highly detailed",
     "negative_prompt": "drawing, painting, crayon, sketch, graphite, impressionist, noisy, blurry, soft, deformed, ugly"
   },
   {
     "name": "Pixel Art",
-    "prompt": "pixel-art {prompt} . low-res, blocky, pixel art style, 8-bit graphics",
+    "prompt": "pixel-art <<PROMPT HERE>> . low-res, blocky, pixel art style, 8-bit graphics",
     "negative_prompt": "sloppy, messy, blurry, noisy, highly detailed, ultra textured, photo, realistic"
   },
   {
     "name": "Advertising",
-    "prompt": "Advertising poster style {prompt} . Professional, modern, product-focused, commercial, eye-catching, highly detailed",
+    "prompt": "Advertising poster style <<PROMPT HERE>> . Professional, modern, product-focused, commercial, eye-catching, highly detailed",
     "negative_prompt": "noisy, blurry, amateurish, sloppy, unattractive"
   },
   {
     "name": "Abstract",
-    "prompt": "Abstract style {prompt} . Non-representational, colors and shapes, expression of feelings, imaginative, highly detailed",
+    "prompt": "Abstract style <<PROMPT HERE>> . Non-representational, colors and shapes, expression of feelings, imaginative, highly detailed",
     "negative_prompt": "realistic, photographic, figurative, concrete"
   },
   {
     "name": "Graffiti",
-    "prompt": "Graffiti style {prompt} . Street art, vibrant, urban, detailed, tag, mural",
+    "prompt": "Graffiti style <<PROMPT HERE>> . Street art, vibrant, urban, detailed, tag, mural",
     "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, realism, photorealistic"
   },
   {
     "name": "Hyperrealism",
-    "prompt": "Hyperrealistic art {prompt} . Extremely high-resolution details, photographic, realism pushed to extreme, fine texture, incredibly lifelike",
+    "prompt": "Hyperrealistic art <<PROMPT HERE>> . Extremely high-resolution details, photographic, realism pushed to extreme, fine texture, incredibly lifelike",
     "negative_prompt": "simplified, abstract, unrealistic, impressionistic, low resolution"
   },
   {
     "name": "Psychedelic",
-    "prompt": "Psychedelic style {prompt} . Vibrant colors, swirling patterns, abstract forms, surreal, trippy",
+    "prompt": "Psychedelic style <<PROMPT HERE>> . Vibrant colors, swirling patterns, abstract forms, surreal, trippy",
     "negative_prompt": "monochrome, black and white, low contrast, realistic, photorealistic, plain, simple"
   },
   {
     "name": "Steampunk",
-    "prompt": "Steampunk style {prompt} . Antique, mechanical, brass and copper tones, gears, intricate, detailed",
+    "prompt": "Steampunk style <<PROMPT HERE>> . Antique, mechanical, brass and copper tones, gears, intricate, detailed",
     "negative_prompt": "deformed, glitch, noisy, low contrast, anime, photorealistic"
   },
   {
     "name": "Surrealist",
-    "prompt": "Surrealist art {prompt} . Dreamlike, mysterious, provocative, symbolic, intricate, detailed",
+    "prompt": "Surrealist art <<PROMPT HERE>> . Dreamlike, mysterious, provocative, symbolic, intricate, detailed",
     "negative_prompt": "anime, photorealistic, realistic, deformed, glitch, noisy, low contrast"
   },
   {
     "name": "Fighting Game",
-    "prompt": "Fighting game style {prompt} . Dynamic, vibrant, action-packed, detailed character design, reminiscent of fighting video games",
+    "prompt": "Fighting game style <<PROMPT HERE>> . Dynamic, vibrant, action-packed, detailed character design, reminiscent of fighting video games",
     "negative_prompt": "peaceful, calm, minimalist, photorealistic"
   },
   {
     "name": "GTA",
-    "prompt": "GTA-style artwork {prompt} . Satirical, exaggerated, pop art style, vibrant colors, iconic characters, action-packed",
+    "prompt": "GTA-style artwork <<PROMPT HERE>> . Satirical, exaggerated, pop art style, vibrant colors, iconic characters, action-packed",
     "negative_prompt": "realistic, black and white, low contrast, impressionist, cubist, noisy, blurry, deformed"
   },
   {
     "name": "Super Mario",
-    "prompt": "Super Mario style {prompt} . Vibrant, cute, cartoony, fantasy, playful, reminiscent of Super Mario series",
+    "prompt": "Super Mario style <<PROMPT HERE>> . Vibrant, cute, cartoony, fantasy, playful, reminiscent of Super Mario series",
     "negative_prompt": "realistic, modern, horror, dystopian, violent"
   },
   {
     "name": "Minecraft",
-    "prompt": "Minecraft style {prompt} . Blocky, pixelated, vibrant colors, recognizable characters and objects, game assets",
+    "prompt": "Minecraft style <<PROMPT HERE>> . Blocky, pixelated, vibrant colors, recognizable characters and objects, game assets",
     "negative_prompt": "smooth, realistic, detailed, photorealistic, noise, blurry, deformed"
   },
   {
     "name": "Pokémon",
-    "prompt": "Pokémon style {prompt} . Vibrant, cute, anime, fantasy, reminiscent of Pokémon series",
+    "prompt": "Pokémon style <<PROMPT HERE>> . Vibrant, cute, anime, fantasy, reminiscent of Pokémon series",
     "negative_prompt": "realistic, modern, horror, dystopian, violent"
   },
   {
     "name": "Retro Arcade",
-    "prompt": "Retro arcade style {prompt} . 8-bit, pixelated, vibrant, classic video game, old school gaming, reminiscent of 80s and 90s arcade games",
+    "prompt": "Retro arcade style <<PROMPT HERE>> . 8-bit, pixelated, vibrant, classic video game, old school gaming, reminiscent of 80s and 90s arcade games",
     "negative_prompt": "modern, ultra-high resolution, photorealistic, 3D"
   },
   {
     "name": "Retro Game",
-    "prompt": "Retro game art {prompt} . 16-bit, vibrant colors, pixelated, nostalgic, charming, fun",
+    "prompt": "Retro game art <<PROMPT HERE>> . 16-bit, vibrant colors, pixelated, nostalgic, charming, fun",
     "negative_prompt": "realistic, photorealistic, 35mm film, deformed, glitch, low contrast, noisy"
   },
   {
     "name": "RPG Fantasy Game",
-    "prompt": "Role-playing game (RPG) style fantasy {prompt} . Detailed, vibrant, immersive, reminiscent of high fantasy RPG games",
+    "prompt": "Role-playing game (RPG) style fantasy <<PROMPT HERE>> . Detailed, vibrant, immersive, reminiscent of high fantasy RPG games",
     "negative_prompt": "sci-fi, modern, urban, futuristic, low detailed"
   },
   {
     "name": "Strategy Game",
-    "prompt": "Strategy game style {prompt} . Overhead view, detailed map, units, reminiscent of real-time strategy video games",
+    "prompt": "Strategy game style <<PROMPT HERE>> . Overhead view, detailed map, units, reminiscent of real-time strategy video games",
     "negative_prompt": "first-person view, modern, photorealistic"
   },
   {
     "name": "Street Fighter",
-    "prompt": "Street Fighter style {prompt} . Vibrant, dynamic, arcade, 2D fighting game, highly detailed, reminiscent of Street Fighter series",
+    "prompt": "Street Fighter style <<PROMPT HERE>> . Vibrant, dynamic, arcade, 2D fighting game, highly detailed, reminiscent of Street Fighter series",
     "negative_prompt": "3D, realistic, modern, photorealistic, turn-based strategy"
   },
   {
     "name": "Legend of Zelda",
-    "prompt": "Legend of Zelda style {prompt} . Vibrant, fantasy, detailed, epic, heroic, reminiscent of The Legend of Zelda series",
+    "prompt": "Legend of Zelda style <<PROMPT HERE>> . Vibrant, fantasy, detailed, epic, heroic, reminiscent of The Legend of Zelda series",
     "negative_prompt": "sci-fi, modern, realistic, horror"
   },
   {
     "name": "Dreamscape",
-    "prompt": "Dreamscape {prompt} . Surreal, ethereal, dreamy, mysterious, fantasy, highly detailed",
+    "prompt": "Dreamscape <<PROMPT HERE>> . Surreal, ethereal, dreamy, mysterious, fantasy, highly detailed",
     "negative_prompt": "realistic, concrete, ordinary, mundane"
   },
   {
     "name": "Dystopian",
-    "prompt": "Dystopian style {prompt} . Bleak, post-apocalyptic, somber, dramatic, highly detailed",
+    "prompt": "Dystopian style <<PROMPT HERE>> . Bleak, post-apocalyptic, somber, dramatic, highly detailed",
     "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, cheerful, optimistic, vibrant, colorful"
   },
   {
     "name": "Fairy Tale",
-    "prompt": "Fairy tale {prompt} . Magical, fantastical, enchanting, storybook style, highly detailed",
+    "prompt": "Fairy tale <<PROMPT HERE>> . Magical, fantastical, enchanting, storybook style, highly detailed",
     "negative_prompt": "realistic, modern, ordinary, mundane"
   },
   {
     "name": "Gothic",
-    "prompt": "Gothic style {prompt} . Dark, mysterious, haunting, dramatic, ornate, detailed",
+    "prompt": "Gothic style <<PROMPT HERE>> . Dark, mysterious, haunting, dramatic, ornate, detailed",
     "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, realism, photorealistic, cheerful, optimistic"
   },
   {
     "name": "Grunge",
-    "prompt": "Grunge style {prompt} . Textured, distressed, vintage, edgy, punk rock vibe, dirty, noisy",
+    "prompt": "Grunge style <<PROMPT HERE>> . Textured, distressed, vintage, edgy, punk rock vibe, dirty, noisy",
     "negative_prompt": "smooth, clean, minimalist, sleek, modern, photorealistic"
   },
   {
     "name": "Horror",
-    "prompt": "Horror-themed {prompt} . Eerie, unsettling, dark, spooky, suspenseful, grim, highly detailed",
+    "prompt": "Horror-themed <<PROMPT HERE>> . Eerie, unsettling, dark, spooky, suspenseful, grim, highly detailed",
     "negative_prompt": "cheerful, bright, vibrant, light-hearted, cute"
   },
   {
     "name": "Space",
-    "prompt": "Space-themed {prompt} . Cosmic, celestial, stars, galaxies, nebulas, planets, science fiction, highly detailed",
+    "prompt": "Space-themed <<PROMPT HERE>> . Cosmic, celestial, stars, galaxies, nebulas, planets, science fiction, highly detailed",
     "negative_prompt": "earthly, mundane, ground-based, realism"
   },
   {
     "name": "Alien",
-    "prompt": "Alien-themed {prompt} . Extraterrestrial, cosmic, otherworldly, mysterious, sci-fi, highly detailed",
+    "prompt": "Alien-themed <<PROMPT HERE>> . Extraterrestrial, cosmic, otherworldly, mysterious, sci-fi, highly detailed",
     "negative_prompt": "earthly, mundane, common, realistic, simple"
   },
   {
     "name": "Film Noir",
-    "prompt": "Film noir style {prompt} . Monochrome, high contrast, dramatic shadows, 1940s style, mysterious, cinematic",
+    "prompt": "Film noir style <<PROMPT HERE>> . Monochrome, high contrast, dramatic shadows, 1940s style, mysterious, cinematic",
     "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, realism, photorealistic, vibrant, colorful"
   },
   {
     "name": "HDR",
-    "prompt": "HDR photo of {prompt} . High dynamic range, vivid, rich details, clear shadows and highlights, realistic, intense, enhanced contrast, highly detailed",
+    "prompt": "HDR photo of <<PROMPT HERE>> . High dynamic range, vivid, rich details, clear shadows and highlights, realistic, intense, enhanced contrast, highly detailed",
     "negative_prompt": "flat, low contrast, oversaturated, underexposed, overexposed, blurred, noisy"
   },
   {
     "name": "Long Exposure",
-    "prompt": "Long exposure photo of {prompt} . Blurred motion, streaks of light, surreal, dreamy, ghosting effect, highly detailed",
+    "prompt": "Long exposure photo of <<PROMPT HERE>> . Blurred motion, streaks of light, surreal, dreamy, ghosting effect, highly detailed",
     "negative_prompt": "static, noisy, deformed, shaky, abrupt, flat, low contrast"
   },
   {
     "name": "Neon Noir",
-    "prompt": "Neon noir {prompt} . Cyberpunk, dark, rainy streets, neon signs, high contrast, low light, vibrant, highly detailed",
+    "prompt": "Neon noir <<PROMPT HERE>> . Cyberpunk, dark, rainy streets, neon signs, high contrast, low light, vibrant, highly detailed",
     "negative_prompt": "bright, sunny, daytime, low contrast, black and white, sketch, watercolor"
   }
 ]

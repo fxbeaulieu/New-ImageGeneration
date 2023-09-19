@@ -1,0 +1,134 @@
+# This file describes the alternative machine learning models
+#  available to the dream script.
+#
+# To add a new model, follow the examples below. Each
+# model requires a model config file, a weights file,
+# and the width and height of the images it
+# was trained on.
+
+#laion400m:
+#    config:  configs/latent-diffusion/txt2img-1p4B-eval.yaml
+#    weights: A:/sd1.6.0/models/Stable-diffusion/ A:/sd1.6.0/models/Stable-diffusion/models/ldm/text2img-large/model.ckpt
+#    width: 256
+#    height: 256
+#stable-diffusion-1.4:
+#    config:  configs/stable-diffusion/v1-inference.yaml
+#    weights: A:/sd1.6.0/models/Stable-diffusion/ A:/sd1.6.0/models/Stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt
+#    width: 512
+#    height: 512
+
+AnalogMadness:
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/AnalogMadness.safetensors
+ width: 512
+ height: 512
+ArtUniverse: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/ArtUniverse.safetensors
+ width: 512
+ height: 512
+AsianRealistic:
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/AsianRealistic.safetensors
+ width: 512
+ height: 512
+BeenYou: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/BeenYou.safetensors
+ width: 512
+ height: 512
+ChildStoriesSemiReal: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/ChildStoriesSemiReal.safetensors
+ width: 512
+ height: 512
+Deliberate: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/Deliberate.safetensors
+ width: 512
+ height: 512
+DreamShaper: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/DreamShaper.safetensors
+ width: 512
+ height: 512
+DreamWorld: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/DreamWorld.safetensors
+ width: 512
+ height: 512
+EpicPhotoGasm: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/EpicPhotoGasm.safetensors
+ width: 512
+ height: 512
+EpicRealismNaturalSin: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/EpicRealismNaturalSin.safetensors
+ width: 512
+ height: 768
+Illustro: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/Illustro.safetensors
+ width: 512
+ height: 512
+KawaiiRealistic: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/KawaiiRealistic.safetensors
+ width: 512
+ height: 512
+MeichiDarkMix: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/MeichiDarkMix.safetensors
+ width: 512
+ height: 512
+MoonRealKo: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/MoonRealKo.safetensors
+ width: 512
+ height: 896
+NextPhoto: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/NextPhoto.safetensors
+ width: 512
+ height: 512
+Niji3D: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/Niji3D.safetensors
+ width: 512
+ height: 512
+ObjectiveReality: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/ObjectiveReality.safetensors
+ width: 512
+ height: 512
+OnlyRealistic: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/OnlyRealistic.safetensors
+ width: 512
+ height: 512
+RealCartoonPixar: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/RealCartoonPixar.safetensors
+ width: 512
+ height: 768
+SmokeyDreams: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/SmokeyDreams.safetensors
+ width: 512
+ height: 512
+ToonYou: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/ToonYou.safetensors
+ width: 512
+ height: 512
+VintageAnime: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/VintageAnime.safetensors
+ width: 512
+ height: 512
+XenoReality: 
+ config: configs/stable-diffusion/v1-inference.yaml
+ weights: A:/sd1.6.0/models/Stable-diffusion/XenoReality.safetensors
+ width: 512
+ height: 512

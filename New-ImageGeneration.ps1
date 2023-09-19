@@ -15,11 +15,11 @@ param (
 
     # Le checkpoint (modèle) de Stable Diffusion à utiliser pour générer l'image. Pour afficher la liste complète de modèles disponibles lancer le script avec le paramètre -ShowModelsList
     [Parameter(Mandatory,ParameterSetName="GenerationParameters")]
-    [ValidateSet({Get-Content -Path "$PSScriptRoot\Models.txt"})]
+    [ValidateScript({Get-Content -Path "$PSScriptRoot\Models.txt"})]
     [string]
     $Checkpoint,
 
-    # Tableau de 2 valeurs : Hauteur et Largeur de l'image. En pixels. Si aucune valeur n'est entrée, 512x512 sera utilisé.
+    # Tableau de 2 valeurs : Hauteur et Largeur de l'image. En pixels. Si aucune valeur n'est entrée, 512x512 sera utilisé (sauf pour les modèles avec une valeur autre spécifiée par défaut).
     [Parameter(ParameterSetName="GenerationParameters")]
     [ValidateCount(2,2)]
     [array]
@@ -31,16 +31,16 @@ param (
     [string]
     $SamplingMethod,
 
-    # Le nombre d'étapes de génération. Valeur en chiffre (entre 10 et 150). Si aucun n'est indiqué, 20 est utilisé.
+    # Le nombre d'étapes de génération. Valeur en chiffre (entre 10 et 150). Si aucun n'est indiqué, 20 est utilisé (sauf pour les modèles avec une valeur autre spécifiée par défaut).
     [Parameter(ParameterSetName="GenerationParameters")]
     [ValidateRange(10,150)]
     [int]
     $NumberOfSteps,
 
-    # Le niveau d'attention à votre description que le modèle doit garder durant la génération. Valeur en chiffre (entre 1 et 30). Plus le nombre est bas, moins le modèle prendra en compte votre description et plus il «improvisera». Si aucun n'est choisi, 8.5 sera sélectionné.
+    # Le niveau d'attention à votre description que le modèle doit garder durant la génération. Valeur en chiffre (entre 1 et 30). Plus le nombre est bas, moins le modèle prendra en compte votre description et plus il «improvisera». Si aucun n'est choisi, 7 sera sélectionné (sauf pour les modèles avec une valeur autre spécifiée par défaut).
     [Parameter(ParameterSetName="GenerationParameters")]
-    [ValidateSet(1,30)]
-    [int]
+    [ValidateRange(1,30)]
+    [double]
     $CFGScale,
 
     # La valeur utilisée dans la génération de nombre aléatoire pour débuter la génération. Si rien n'est indiqué, -1 est utilisé (génération complètement aléatoire).
@@ -50,7 +50,7 @@ param (
 
     # Le style artistique particulier que vous voulez pour votre image. Si rien n'est sélectionné uniquement votre prompt et negative prompt sont utilisés comme instructions de style par le modèle. Vous pouvez spécifier 'Random' pour qu'un choix soit fait automatiquement parmi les styles disponibles. Pour afficher la liste complète de styles disponibles lancer le script avec le paramètre -ShowStylesList
     [Parameter(ParameterSetName="GenerationParameters")]
-    [ValidateSet({Get-Content -Path "$PSScriptRoot\Artists.txt"})]
+    [ValidateScript({Get-Content -Path "$PSScriptRoot\Artists.txt"})]
     [string]
     $ArtStyle,
 
@@ -62,27 +62,33 @@ param (
 
     # Choix des keywords conceptuels (maximum de 3) pour diriger le concept général de l'image. Pour afficher la liste complète de noms disponibles, lancer le script avec le paramètre -ShowConceptualKeywordsList
     [Parameter(ParameterSetName="GenerationParameters")]
-    [ValidateSet({Get-Content -Path "$PSScriptRoot\ConceptualKeyword.txt"})]
+    [ValidateScript({Get-Content -Path "$PSScriptRoot\ConceptualKeyword.txt"})]
     [ValidateCount(0, 3)]
     [array]
     $ConceptualKeyword,
 
     #Choix des keywords émotifs (maximum de 3) pour diriger l'apparence générale du sujet de l'image. Pour afficher la liste complète de noms disponibles, lancer le script avec le paramètre -ShowMoodKeywordsList
     [Parameter(ParameterSetName="GenerationParameters")]
-    [ValidateSet({Get-Content -Path "$PSScriptRoot\MoodKeyword.txt"})]
+    [ValidateScript({Get-Content -Path "$PSScriptRoot\MoodKeyword.txt"})]
     [ValidateCount(0, 3)]
     [array]
     $MoodKeyword,
 
     # Choix d'artistes (maximum de 3) à utiliser comme inspiration pour le modèle durant la génération. Pour afficher la liste complète de noms disponibles lancer le script avec le paramètre -ShowArtistsList
     [Parameter(ParameterSetName="GenerationParameters")]
-    [ValidateSet({Get-Content -Path "$PSScriptRoot\Artists.txt"})]
+    [ValidateScript({Get-Content -Path "$PSScriptRoot\Artists.txt"})]
     [ValidateCount(0, 3)]
     [array]
     $Artists,
 
     #### Options du script
     ####
+    # Pour choisir comment formatter le prompt; Pour générer directement ou pour obtenir le texte à copier dans Stable-diffusion WebUI
+    [Parameter(Mandatory,ParameterSetName="GenerationParameters")]
+    [ValidateSet('Prompt CLI','Prompt WebUI')]
+    [string]
+    $Global:PromptFormat,
+
     # Pour afficher tous les modèles disponibles
     [Parameter(ParameterSetName="ScriptOptionsModelsList")]
     [switch]
@@ -110,39 +116,50 @@ param (
 )
 
 if ($PSBoundParameters.ContainsKey('ShowModelsList')) {
-    Get-Content -Path "$PSScriptRoot\Models.txt"
+    $ListToDisplay = Get-Content -Path "$PSScriptRoot\Models.txt"
+    Start-Process 'powershell.exe' -ArgumentList "Write-Host $ListToDisplay; Read-Host"
     exit
 }
 
 if ($PSBoundParameters.ContainsKey('ShowArtistsList')) {
-    Get-Content -Path "$PSScriptRoot\Artists.txt"
+    $ListToDisplay = Get-Content -Path "$PSScriptRoot\Artists.txt"
+    Start-Process 'powershell.exe' -ArgumentList "Write-Host $ListToDisplay; Read-Host"
     exit
 }
 
 if ($PSBoundParameters.ContainsKey('ShowStylesList')) {
-    Get-Content -Path "$PSScriptRoot\Styles.txt"
+    $ListToDisplay = Get-Content -Path "$PSScriptRoot\Styles.txt"
+    Start-Process 'powershell.exe' -ArgumentList "Write-Host $ListToDisplay; Read-Host"
     exit
 }
 
 if ($PSBoundParameters.ContainsKey('ShowConceptualKeywordsList')) {
-    Get-Content -Path "$PSScriptRoot\ConceptualKeyword.txt"
+    $ListToDisplay = Get-Content -Path "$PSScriptRoot\ConceptualKeyword.txt"
+    Start-Process 'powershell.exe' -ArgumentList "Write-Host $ListToDisplay; Read-Host"
     exit
 }
 
 if ($PSBoundParameters.ContainsKey('ShowMoodKeywordsList')) {
-    Get-Content -Path "$PSScriptRoot\MoodKeyword.txt"
+    $ListToDisplay = Get-Content -Path "$PSScriptRoot\MoodKeyword.txt"
+    Start-Process 'powershell.exe' -ArgumentList "Write-Host $ListToDisplay; Read-Host"
     exit
 }
 
-if (! (Test-Path -Path "$PSScriptRoot\generations_parameters_saved"))
+if (! (Test-Path -Path "$ENV:USERPROFILE\Documents\sd_generations_parameters_saved"))
 {
-    New-Item -Path "$PSScriptRoot" -Name "generations_parameters_saved" -ItemType Directory -Force
+    New-Item -Path "$ENV:USERPROFILE\Documents" -Name "sd_generations_parameters_saved" -ItemType Directory -Force
 }
 
+$OutputDirectory = "$ENV:USERPROFILE\Documents\sd_generations_parameters_saved"
+$OutputImageDirectory = "$ENV:USERPROFILE\Pictures\sd_generations"
+
 $Global:BasicNegative = "mutation, deformed, deformed iris, duplicate, morbid, mutilated, disfigured, poorly drawn hand, poorly drawn face, bad proportions, gross proportions, extra limbs, cloned face, long neck, malformed limbs, missing arm, missing leg, extra arm, extra leg, fused fingers, too many fingers, extra fingers, mutated hands, blurry, bad anatomy, out of frame, contortionist, contorted limbs, exaggerated features, disproportionate, twisted posture, unnatural pose, disconnected, disproportionate, warped, misshapen, out of scale, "
+$Global:BasicPositive = "4k, 8k, uhd, hd, very detailed, high level of detail, rendered as masterpiece, very smooth, sharp, global illumination, ray tracing, stunning, masterpiece, best quality, "
 
 $Global:DetailsEmbeddings = "fFaceDetail EyeDetail OverallDetail"
 $Global:NegativeEmbeddings = "HandNeg-neg CyberRealistic_Negative-neg easynegative ng_deepnegative_v1_75t"
+$Global:DetailsEmbeddingsCLI = "A:\sd1.6.0\embeddings\Details\fFaceDetail.pt", "A:\sd1.6.0\embeddings\Details\EyeDetail.pt", "A:\sd1.6.0\embeddings\Details\OverallDetail.pt"
+$Global:NegativeEmbeddingsCLI = "A:\sd1.6.0\embeddings\Negative\CyberRealistic_Negative-neg.pt", "A:\sd1.6.0\embeddings\Negative\ng_deepnegative_v1_75t.pt", "A:\sd1.6.0\embeddings\Negative\easynegative.safetensors"
 
 $Global:Styles = Get-Content -Path "$PSScriptRoot\styles.json" | ConvertFrom-Json -Depth 3
 $Global:RandomStyleSelectorMaxValue = 40
@@ -154,7 +171,10 @@ function Get-StylePromptPart {
         # Le style sélectionné au lancement de l'exécution
         [Parameter(Mandatory)]
         [string]
-        $ArtStyle
+        $ArtStyle,
+        [Parameter(Mandatory)]
+        [string]
+        $Prompt
     )
 
         if ($ArtStyle -eq 'Random')
@@ -169,8 +189,8 @@ function Get-StylePromptPart {
             $SelectedArtStyleNegativePrompt = $Global:Styles | Where-Object -Property name -eq $ArtStyle | Select-Object -Property negative_prompt    
         }
 
-        $StyledPrompt = $SelectedArtStylePrompt.ToString().Replace('{prompt}', $Prompt)
-        $StyledNegativePrompt = ($SelectedArtStyleNegativePrompt.ToString()+", "+"$NegativePrompt")
+        $StyledPrompt = $SelectedArtStylePrompt.prompt.Replace('<<PROMPT HERE>>', "$Prompt")
+        $StyledNegativePrompt = ($SelectedArtStyleNegativePrompt.negative_prompt+", "+"$NegativePrompt")
 
         Return $StyledPrompt,$StyledNegativePrompt
 }
@@ -204,7 +224,14 @@ function Get-ArtistsToPrompt {
     $ArtistsToPrompt = ""
     foreach($Artist in $Artists)
     {
-        $ArtistsToPrompt+="style of $Artist, "
+        if($Global:PromptFormat -eq 'Prompt CLI')
+        {
+            $ArtistsToPrompt+="style of $Artist`:1.3, "
+        }
+        elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+        {
+            $ArtistsToPrompt+="(style of $Artist`:1.3), "
+        }
     }
     
     Return $ArtistsToPrompt
@@ -217,12 +244,18 @@ function Get-ConceptualKeywordsToPrompt {
         [array]
         $ConceptualKeyword
     )
-
+foreach($Word in $ConceptualKeyword)
+{
     $ConceptualKeywordsToPrompt = ""
-    foreach($Word in $ConceptualKeyword)
+    if($Global:PromptFormat -eq 'Prompt CLI') 
     {
-        $ConceptualKeywordsToPrompt+="$Word, "
+        $ArtistsToPrompt+="style of $Word`:1.4, "
     }
+    elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+    {
+        $ConceptualKeywordsToPrompt+="($Word`:1.4), "
+    }
+}
     
     Return $ConceptualKeywordsToPrompt
 }
@@ -238,7 +271,14 @@ function Get-MoodKeywordsToPrompt {
     $MoodKeywordsToPrompt = ""
     foreach($Word in $MoodKeyword)
     {
-        $MoodKeywordsToPrompt+="$Word, "
+        if($Global:PromptFormat -eq 'Prompt CLI') 
+        {
+            $MoodKeywordsToPrompt+="$Word`:1.3, "
+        }
+        elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+        {
+            $MoodKeywordsToPrompt+="($Word`:1.3), "
+        }
     }
     
     Return $MoodKeywordsToPrompt
@@ -246,8 +286,8 @@ function Get-MoodKeywordsToPrompt {
 
 if (([boolean](Get-Variable "ArtStyle" -ErrorAction SilentlyContinue)) -ne $false)
 {
-    $StyledPrompt = (Get-StylePromptPart -ArtStyle $ArtStyle)[0]
-    $StyledNegativePrompt = (Get-StylePromptPart -ArtStyle $ArtStyle)[1]
+    $StyledPrompt = (Get-StylePromptPart -ArtStyle $ArtStyle -Prompt $Prompt)[0]
+    $StyledNegativePrompt = (Get-StylePromptPart -ArtStyle $ArtStyle -Prompt $Prompt)[1]
 }
 else 
 {
@@ -277,35 +317,92 @@ if (([boolean](Get-Variable "MoodKeyword" -ErrorAction SilentlyContinue)) -ne $f
 
 if (([boolean](Get-Variable "DirectionKeyword" -ErrorAction SilentlyContinue)) -ne $false)
 {
-    $DirectionKeyword = "$DirectionKeyword, "
+    if($Global:PromptFormat -eq 'Prompt CLI') 
+    {
+        $DirectionKeywordToPrompt = "$DirectionKeyword`:1.5, "
+    }
+    elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+    {
+        $DirectionKeywordToPrompt = "($DirectionKeyword`:1.5), "
+    }
 }
 
-$FinalPromptComposition = ("$ConceptualKeywordsToPrompt"+"$DirectionKeyword"+"$MoodKeywordsToPrompt"+"$SelectedCheckpointKeywords"+"$StyledPrompt, "+"$ArtistsToPrompt"+"$Global:DetailsEmbeddings")
-$FinalNegativePromptComposition = ("$StyledNegativePrompt, "+"$Global:BasicNegative"+"$Global:NegativeEmbeddings")
+if($Global:PromptFormat -eq 'Prompt WebUI')
+{
+    $FinalPromptComposition = ("$ConceptualKeywordsToPrompt"+"$DirectionKeywordToPrompt"+"$MoodKeywordsToPrompt"+"$SelectedCheckpointKeywords"+"$StyledPrompt, "+$Global:BasicPositive+"$ArtistsToPrompt"+$Global:DetailsEmbeddings)
+    $FinalNegativePromptComposition = ("$StyledNegativePrompt, "+"$Global:BasicNegative"+$Global:NegativeEmbeddings)
+}
+elseif($Global:PromptFormat -eq 'Prompt CLI')
+{
+    $FinalPromptComposition = ("$ConceptualKeywordsToPrompt"+"$DirectionKeywordToPrompt"+"$MoodKeywordsToPrompt"+"$SelectedCheckpointKeywords"+"$StyledPrompt, "+$Global:BasicPositive+"$ArtistsToPrompt")
+    $FinalNegativePromptComposition = ("$StyledNegativePrompt, "+"$Global:BasicNegative")
+}
 
 if (([boolean](Get-Variable "Resolution" -ErrorAction SilentlyContinue)) -eq $false)
 {
-    $Resolution = '512','512'
+    switch ($Checkpoint) {
+        EpicRealismNaturalSin { $Resolution = '512','768' }
+        MoonRealKo { $Resolution = '512','896' }
+        RealCartoonPixar { $Resolution = '512','768' }
+        Default {$Resolution = '512','512'}
+    }
 }
 
-if (([boolean](Get-Variable "SamplingMethod" -ErrorAction SilentlyContinue)) -eq $false)
+if ($Global:PromptFormat -eq 'Prompt CLI')
 {
-    $SamplingMethod = "DPM++ 2M Karas"
+    switch ($SamplingMethod) {
+        Euler { $SamplingMethod = "k_euler" }
+        "Euler A" { $SamplingMethod = "k_euler_a" }
+        PLMS { $SamplingMethod = "k_plms" }
+        Default { $SamplingMethod = "k_dpm_2" }
+    }
+}
+
+if($SamplingMethod -like "")
+{
+    if ($Global:PromptFormat -eq 'Prompt WebUI')
+    {
+        $SamplingMethod = "DPM++ 2M Karas"
+    }
 }
 
 if (([boolean](Get-Variable "Seed" -ErrorAction SilentlyContinue)) -eq $false)
 {
-    $Seed = '-1'
+    if($Global:PromptFormat -eq 'Prompt CLI') 
+    {
+        $Seed = Get-Random -Minimum 1 -Maximum 9999999999
+    }
+    elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+    {
+        $Seed = "-1"
+    }
 }
 
 if (([boolean](Get-Variable "CFGScale" -ErrorAction SilentlyContinue)) -eq $false)
 {
-    $CFGScale = '8.5'
+    switch ($Checkpoint) {
+        ArtUniverse { $CFGScale = '5' }
+        BeenYou { $CFGScale = '8' }
+        EpicRealismNaturalSin { $CFGScale = '4.5' }
+        MoonRealKo { $CFGScale = '9.5' }
+        NextPhoto { $CFGScale = '4.5' }
+        OnlyRealistic { $CFGScale = '5.5' }
+        ToonYou { $CFGScale = '8' }
+        Default { $CFGScale = '7' }
+    }
 }
 
 if (([boolean](Get-Variable "NumberOfSteps" -ErrorAction SilentlyContinue)) -eq $false)
 {
-    $NumberOfSteps = "20"
+    switch ($Checkpoint) {
+        ArtUniverse { $NumberOfSteps = '30' }
+        BeenYou { $NumberOfSteps = '30' }
+        EpicRealismNaturalSin { $NumberOfSteps = '30' }
+        MoonRealKo { $NumberOfSteps = '30' }
+        ToonYou { $NumberOfSteps = '30' }
+        VintageAnime { $NumberOfSteps = '30' }
+        Default { $NumberOfSteps = '20' }
+    }
 }
 
 class PromptGenerationParameters{
@@ -315,20 +412,48 @@ class PromptGenerationParameters{
     [array]$Resolution
     [string]$SamplingMethod
     [int]$NumberOfSteps
-    [int]$CFGScale
+    [double]$CFGScale
     [int]$Seed
 }
 
 $Generation = [PromptGenerationParameters]::new()
 $Generation.CheckPoint = $Checkpoint
-$Generation.Prompt = $FinalPromptComposition
-$Generation.NegativePrompt = $FinalNegativePromptComposition
+$Generation.Prompt = $FinalPromptComposition.Replace('  ',' ')
+$Generation.NegativePrompt = $FinalNegativePromptComposition.Replace('  ',' ')
 $Generation.Resolution = $Resolution
 $Generation.SamplingMethod = $SamplingMethod
 $Generation.NumberOfSteps = $NumberOfSteps
 $Generation.CFGScale = $CFGScale
 $Generation.Seed = $Seed
 
-$ExportFileDate = Get-Date -UnixTimeSeconds
-Add-Content -Value $Generation -Path "$PSScriptRoot\generations_parameters_saved\$ExportFileDate.txt" -Force
+$ParametersOutput1 = ("Using model: "+$Generation.CheckPoint+"`nSampling with: "+$Generation.SamplingMethod+"`nStarting at seed: "+$Generation.Seed)
+$ParametersOutput2 = ("Generating an image of dimensions: "+$Generation.Resolution+"`nWith an attention level of: "+$Generation.CFGScale+"`nFor: "+$Generation.NumberOfSteps+" steps")
+$PromptOutput = $Generation.Prompt
+$PromptNegativeOutput = $Generation.NegativePrompt
+
+$OutputParameters = ("$ParametersOutput1"+"$ParametersOutput2"+"`n`n"+"$PromptOutput"+"`n`n"+"$PromptNegativeOutput")
+
+$ExportFileDate = Get-Date -Format FileDateTime
+Add-Content -Value $OutputParameters -Path "$OutputDirectory\$ExportFileDate.txt" -Force
+
+if ($Global:PromptFormat -eq 'Prompt CLI')
+{
+    $CLIFullPrompt = $Generation.Prompt+"[["+$Generation.NegativePrompt+"]]"
+    python3 sd/scripts/dream.py $CLIFullPrompt --model $Generation.CheckPoint --sampler $Generation.SamplingMethod --embedding_path $Global:DetailsEmbeddingsCLI[0] --embedding_path $Global:DetailsEmbeddingsCLI[1] --embedding_path $Global:DetailsEmbeddingsCLI[2] --embedding_path $Global:NegativeEmbeddingsCLI[0] --embedding_path $Global:NegativeEmbeddingsCLI[1] --embedding_path $Global:NegativeEmbeddingsCLI[2] --width $Generation.Resolution[0] --height $Generation.Resolution[1] --steps $Generation.NumberOfSteps --cfg_scale $Generation.CFGScale --seed $Generation.Seed -o ("$OutputImageDirectory"+($Generation.Seed).ToString()+"-"+$ExportFileDate+".png")
+}
+
+elseif ($Global:PromptFormat -eq 'Prompt WebUI')
+{
+    Write-Host "`n"
+    Write-Host "Paramètres:"
+    Write-Host -ForegroundColor Cyan ("$ParametersOutput1"+"`n`n"+"$ParametersOutput2")
+    Write-Host "`n"
+    Write-Host "Prompt:"
+    Write-Host -ForegroundColor Green $PromptOutput
+    Write-Host "`n"
+    Write-Host "Negative Prompt:"
+    Write-Host -ForegroundColor Red $PromptNegativeOutput
+    Write-Host "`n"
+    Write-Host -ForegroundColor Magenta "Les paramètres ont également été exportés dans le fichier $OutputDirectory\$ExportFileDate.txt"
+}
 
