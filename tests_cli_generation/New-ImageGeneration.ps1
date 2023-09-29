@@ -85,9 +85,9 @@ param (
     ####
     # Pour choisir comment formatter le prompt; Pour générer directement ou pour obtenir le texte à copier dans Stable-diffusion WebUI
     [Parameter(Mandatory,ParameterSetName="GenerationParameters")]
-    [ValidateSet('Prompt CLI','Prompt WebUI')]
+    [ValidateSet('CLI','WebUI')]
     [string]
-    $Global:PromptFormat,
+    $PromptFormat,
 
     # Pour afficher tous les modèles disponibles
     [Parameter(ParameterSetName="ScriptOptionsModelsList")]
@@ -114,6 +114,8 @@ param (
     [switch]
     $ShowMoodKeywordsList
 )
+
+$Global:PromptFormat = $PromptFormat
 
 if ($PSBoundParameters.ContainsKey('ShowModelsList')) {
     $ListToDisplay = Get-Content -Path "$PSScriptRoot\Models.txt"
@@ -161,7 +163,7 @@ $Global:NegativeEmbeddings = "HandNeg-neg CyberRealistic_Negative-neg easynegati
 $Global:DetailsEmbeddingsCLI = "A:\sd1.6.0\embeddings\Details\fFaceDetail.pt", "A:\sd1.6.0\embeddings\Details\EyeDetail.pt", "A:\sd1.6.0\embeddings\Details\OverallDetail.pt"
 $Global:NegativeEmbeddingsCLI = "A:\sd1.6.0\embeddings\Negative\CyberRealistic_Negative-neg.pt", "A:\sd1.6.0\embeddings\Negative\ng_deepnegative_v1_75t.pt", "A:\sd1.6.0\embeddings\Negative\easynegative.safetensors"
 
-$Global:Styles = Get-Content -Path "$PSScriptRoot\styles.json" | ConvertFrom-Json -Depth 3
+$Global:Styles = Get-Content -Path "$PSScriptRoot\styles.json" | ConvertFrom-Json
 $Global:RandomStyleSelectorMaxValue = 40
 
 $Global:ModelsKeywords = (@("Deliberate","mj,cozy,cinematic, "), @("SmokeyDreams","dense smoke fetish, "), @("NextPhoto","photo,photograph, "), @("Niji3D","3D model, "), @("ToonYou","flat color, "))
@@ -224,11 +226,11 @@ function Get-ArtistsToPrompt {
     $ArtistsToPrompt = ""
     foreach($Artist in $Artists)
     {
-        if($Global:PromptFormat -eq 'Prompt CLI')
+        if($Global:PromptFormat -eq 'CLI')
         {
             $ArtistsToPrompt+="style of $Artist`:1.3, "
         }
-        elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+        elseif ($Global:PromptFormat -eq 'WebUI') 
         {
             $ArtistsToPrompt+="(style of $Artist`:1.3), "
         }
@@ -247,11 +249,11 @@ function Get-ConceptualKeywordsToPrompt {
 foreach($Word in $ConceptualKeyword)
 {
     $ConceptualKeywordsToPrompt = ""
-    if($Global:PromptFormat -eq 'Prompt CLI') 
+    if($Global:PromptFormat -eq 'CLI') 
     {
         $ArtistsToPrompt+="style of $Word`:1.4, "
     }
-    elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+    elseif ($Global:PromptFormat -eq 'WebUI') 
     {
         $ConceptualKeywordsToPrompt+="($Word`:1.4), "
     }
@@ -271,11 +273,11 @@ function Get-MoodKeywordsToPrompt {
     $MoodKeywordsToPrompt = ""
     foreach($Word in $MoodKeyword)
     {
-        if($Global:PromptFormat -eq 'Prompt CLI') 
+        if($Global:PromptFormat -eq 'CLI') 
         {
             $MoodKeywordsToPrompt+="$Word`:1.3, "
         }
-        elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+        elseif ($Global:PromptFormat -eq 'WebUI') 
         {
             $MoodKeywordsToPrompt+="($Word`:1.3), "
         }
@@ -317,22 +319,22 @@ if (([boolean](Get-Variable "MoodKeyword" -ErrorAction SilentlyContinue)) -ne $f
 
 if (([boolean](Get-Variable "DirectionKeyword" -ErrorAction SilentlyContinue)) -ne $false)
 {
-    if($Global:PromptFormat -eq 'Prompt CLI') 
+    if($Global:PromptFormat -eq 'CLI') 
     {
         $DirectionKeywordToPrompt = "$DirectionKeyword`:1.5, "
     }
-    elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+    elseif ($Global:PromptFormat -eq 'WebUI') 
     {
         $DirectionKeywordToPrompt = "($DirectionKeyword`:1.5), "
     }
 }
 
-if($Global:PromptFormat -eq 'Prompt WebUI')
+if($Global:PromptFormat -eq 'WebUI')
 {
     $FinalPromptComposition = ("$ConceptualKeywordsToPrompt"+"$DirectionKeywordToPrompt"+"$MoodKeywordsToPrompt"+"$SelectedCheckpointKeywords"+"$StyledPrompt, "+$Global:BasicPositive+"$ArtistsToPrompt"+$Global:DetailsEmbeddings)
     $FinalNegativePromptComposition = ("$StyledNegativePrompt, "+"$Global:BasicNegative"+$Global:NegativeEmbeddings)
 }
-elseif($Global:PromptFormat -eq 'Prompt CLI')
+elseif($Global:PromptFormat -eq 'CLI')
 {
     $FinalPromptComposition = ("$ConceptualKeywordsToPrompt"+"$DirectionKeywordToPrompt"+"$MoodKeywordsToPrompt"+"$SelectedCheckpointKeywords"+"$StyledPrompt, "+$Global:BasicPositive+"$ArtistsToPrompt")
     $FinalNegativePromptComposition = ("$StyledNegativePrompt, "+"$Global:BasicNegative")
@@ -348,31 +350,39 @@ if (([boolean](Get-Variable "Resolution" -ErrorAction SilentlyContinue)) -eq $fa
     }
 }
 
-if ($Global:PromptFormat -eq 'Prompt CLI')
+if ($Global:PromptFormat -eq 'CLI')
 {
+    $Global:SamplingMethodCLI = ""
     switch ($SamplingMethod) {
-        Euler { $SamplingMethod = "k_euler" }
-        "Euler A" { $SamplingMethod = "k_euler_a" }
-        PLMS { $SamplingMethod = "k_plms" }
-        Default { $SamplingMethod = "k_dpm_2" }
+        Euler { $Global:SamplingMethodCLI = "k_euler" }
+        "Euler A" { $Global:SamplingMethodCLI = "k_euler_a" }
+        PLMS { $Global:SamplingMethodCLI = "k_plms" }
+        Default { $Global:SamplingMethodCLI = "k_dpm_2" }
     }
+    $FinalSamplingMethod = $SamplingMethodCLI
 }
-
-if($SamplingMethod -like "")
+elseif ($Global:PromptFormat -eq 'WebUI')
 {
-    if ($Global:PromptFormat -eq 'Prompt WebUI')
+    if($SamplingMethod -like "")
     {
         $SamplingMethod = "DPM++ 2M Karas"
     }
+    $FinalSamplingMethod = $SamplingMethod
 }
+
+    if ($Global:PromptFormat -eq 'WebUI')
+    {
+        
+    }
+
 
 if (([boolean](Get-Variable "Seed" -ErrorAction SilentlyContinue)) -eq $false)
 {
-    if($Global:PromptFormat -eq 'Prompt CLI') 
+    if($Global:PromptFormat -eq 'CLI') 
     {
         $Seed = Get-Random -Minimum 1 -Maximum 9999999999
     }
-    elseif ($Global:PromptFormat -eq 'Prompt WebUI') 
+    elseif ($Global:PromptFormat -eq 'WebUI') 
     {
         $Seed = "-1"
     }
@@ -410,7 +420,7 @@ class PromptGenerationParameters{
     [string]$Prompt
     [string]$NegativePrompt
     [array]$Resolution
-    [string]$SamplingMethod
+    [string]$FinalSamplingMethod
     [int]$NumberOfSteps
     [double]$CFGScale
     [int]$Seed
@@ -421,7 +431,7 @@ $Generation.CheckPoint = $Checkpoint
 $Generation.Prompt = $FinalPromptComposition.Replace('  ',' ')
 $Generation.NegativePrompt = $FinalNegativePromptComposition.Replace('  ',' ')
 $Generation.Resolution = $Resolution
-$Generation.SamplingMethod = $SamplingMethod
+$Generation.FinalSamplingMethod = $FinalSamplingMethod
 $Generation.NumberOfSteps = $NumberOfSteps
 $Generation.CFGScale = $CFGScale
 $Generation.Seed = $Seed
@@ -436,13 +446,13 @@ $OutputParameters = ("$ParametersOutput1"+"$ParametersOutput2"+"`n`n"+"$PromptOu
 $ExportFileDate = Get-Date -Format FileDateTime
 Add-Content -Value $OutputParameters -Path "$OutputDirectory\$ExportFileDate.txt" -Force
 
-if ($Global:PromptFormat -eq 'Prompt CLI')
+if ($Global:PromptFormat -eq 'CLI')
 {
     $CLIFullPrompt = $Generation.Prompt+"[["+$Generation.NegativePrompt+"]]"
-    python3 sd/scripts/dream.py $CLIFullPrompt --model $Generation.CheckPoint --sampler $Generation.SamplingMethod --embedding_path $Global:DetailsEmbeddingsCLI[0] --embedding_path $Global:DetailsEmbeddingsCLI[1] --embedding_path $Global:DetailsEmbeddingsCLI[2] --embedding_path $Global:NegativeEmbeddingsCLI[0] --embedding_path $Global:NegativeEmbeddingsCLI[1] --embedding_path $Global:NegativeEmbeddingsCLI[2] --width $Generation.Resolution[0] --height $Generation.Resolution[1] --steps $Generation.NumberOfSteps --cfg_scale $Generation.CFGScale --seed $Generation.Seed -o ("$OutputImageDirectory"+($Generation.Seed).ToString()+"-"+$ExportFileDate+".png")
+    python scripts/dream.py $CLIFullPrompt --model $Generation.CheckPoint --sampler $Generation.SamplingMethod --embedding_path $Global:DetailsEmbeddingsCLI[0] --embedding_path $Global:DetailsEmbeddingsCLI[1] --embedding_path $Global:DetailsEmbeddingsCLI[2] --embedding_path $Global:NegativeEmbeddingsCLI[0] --embedding_path $Global:NegativeEmbeddingsCLI[1] --embedding_path $Global:NegativeEmbeddingsCLI[2] --width $Generation.Resolution[0] --height $Generation.Resolution[1] --steps $Generation.NumberOfSteps --cfg_scale $Generation.CFGScale --seed $Generation.Seed -o ("$OutputImageDirectory"+($Generation.Seed).ToString()+"-"+$ExportFileDate+".png")
 }
 
-elseif ($Global:PromptFormat -eq 'Prompt WebUI')
+elseif ($Global:PromptFormat -eq 'WebUI')
 {
     Write-Host "`n"
     Write-Host "Paramètres:"
