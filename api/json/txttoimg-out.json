@@ -1,0 +1,28 @@
+{
+    "TextToImageResponse": {
+    "title": "TextToImageResponse",
+    "required": [
+        "parameters",
+        "info"
+    ],
+    "type": "object",
+    "properties": {
+        "images": {
+            "title": "Image",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "The generated image in base64 format."
+        },
+        "parameters": {
+            "title": "Parameters",
+            "type": "object"
+        },
+        "info": {
+            "title": "Info",
+            "type": "string"
+            }
+        }
+    }
+}

@@ -1,0 +1,1126 @@
+[
+    {
+        "name": "samples_save",
+        "label": "Always save all generated images"
+    },
+    {
+        "name": "samples_format",
+        "label": "File format for images"
+    },
+    {
+        "name": "samples_filename_pattern",
+        "label": "Images filename pattern"
+    },
+    {
+        "name": "save_images_add_number",
+        "label": "Add number to filename when saving"
+    },
+    {
+        "name": "save_images_replace_action",
+        "label": "Saving the image to an existing file"
+    },
+    {
+        "name": "grid_save",
+        "label": "Always save all generated image grids"
+    },
+    {
+        "name": "grid_format",
+        "label": "File format for grids"
+    },
+    {
+        "name": "grid_extended_filename",
+        "label": "Add extended info (seed, prompt) to filename when saving grid"
+    },
+    {
+        "name": "grid_only_if_multiple",
+        "label": "Do not save grids consisting of one picture"
+    },
+    {
+        "name": "grid_prevent_empty_spots",
+        "label": "Prevent empty spots in grid (when set to autodetect)"
+    },
+    {
+        "name": "grid_zip_filename_pattern",
+        "label": "Archive filename pattern"
+    },
+    {
+        "name": "n_rows",
+        "label": "Grid row count; use -1 for autodetect and 0 for it to be same as batch size"
+    },
+    {
+        "name": "font",
+        "label": "Font for image grids that have text"
+    },
+    {
+        "name": "grid_text_active_color",
+        "label": "Text color for image grids"
+    },
+    {
+        "name": "grid_text_inactive_color",
+        "label": "Inactive text color for image grids"
+    },
+    {
+        "name": "grid_background_color",
+        "label": "Background color for image grids"
+    },
+    {
+        "name": "enable_pnginfo",
+        "label": "Save text information about generation parameters as chunks to png files"
+    },
+    {
+        "name": "save_txt",
+        "label": "Create a text file next to every image with generation parameters."
+    },
+    {
+        "name": "save_images_before_face_restoration",
+        "label": "Save a copy of image before doing face restoration."
+    },
+    {
+        "name": "save_images_before_highres_fix",
+        "label": "Save a copy of image before applying highres fix."
+    },
+    {
+        "name": "save_images_before_color_correction",
+        "label": "Save a copy of image before applying color correction to img2img results"
+    },
+    {
+        "name": "save_mask",
+        "label": "For inpainting, save a copy of the greyscale mask"
+    },
+    {
+        "name": "save_mask_composite",
+        "label": "For inpainting, save a masked composite"
+    },
+    {
+        "name": "jpeg_quality",
+        "label": "Quality for saved jpeg images"
+    },
+    {
+        "name": "webp_lossless",
+        "label": "Use lossless compression for webp images"
+    },
+    {
+        "name": "export_for_4chan",
+        "label": "Save copy of large images as JPG"
+    },
+    {
+        "name": "img_downscale_threshold",
+        "label": "File size limit for the above option, MB"
+    },
+    {
+        "name": "target_side_length",
+        "label": "Width/height limit for the above option, in pixels"
+    },
+    {
+        "name": "img_max_size_mp",
+        "label": "Maximum image size"
+    },
+    {
+        "name": "use_original_name_batch",
+        "label": "Use original name for output filename during batch process in extras tab"
+    },
+    {
+        "name": "use_upscaler_name_as_suffix",
+        "label": "Use upscaler name as filename suffix in the extras tab"
+    },
+    {
+        "name": "save_selected_only",
+        "label": "When using 'Save' button, only save a single selected image"
+    },
+    {
+        "name": "save_init_img",
+        "label": "Save init images when using img2img"
+    },
+    {
+        "name": "temp_dir",
+        "label": "Directory for temporary images; leave empty for default"
+    },
+    {
+        "name": "clean_temp_dir_at_start",
+        "label": "Cleanup non-default temporary directory when starting webui"
+    },
+    {
+        "name": "save_incomplete_images",
+        "label": "Save incomplete images"
+    },
+    {
+        "name": "outdir_samples",
+        "label": "Output directory for images; if empty, defaults to three directories below"
+    },
+    {
+        "name": "outdir_txt2img_samples",
+        "label": "Output directory for txt2img images"
+    },
+    {
+        "name": "outdir_img2img_samples",
+        "label": "Output directory for img2img images"
+    },
+    {
+        "name": "outdir_extras_samples",
+        "label": "Output directory for images from extras tab"
+    },
+    {
+        "name": "outdir_grids",
+        "label": "Output directory for grids; if empty, defaults to two directories below"
+    },
+    {
+        "name": "outdir_txt2img_grids",
+        "label": "Output directory for txt2img grids"
+    },
+    {
+        "name": "outdir_img2img_grids",
+        "label": "Output directory for img2img grids"
+    },
+    {
+        "name": "outdir_save",
+        "label": "Directory for saving images using the Save button"
+    },
+    {
+        "name": "outdir_init_images",
+        "label": "Directory for saving init images when using img2img"
+    },
+    {
+        "name": "save_to_dirs",
+        "label": "Save images to a subdirectory"
+    },
+    {
+        "name": "grid_save_to_dirs",
+        "label": "Save grids to a subdirectory"
+    },
+    {
+        "name": "use_save_to_dirs_for_ui",
+        "label": "When using \"Save\" button, save images to a subdirectory"
+    },
+    {
+        "name": "directories_filename_pattern",
+        "label": "Directory name pattern"
+    },
+    {
+        "name": "directories_max_prompt_words",
+        "label": "Max prompt words for [prompt_words] pattern"
+    },
+    {
+        "name": "ESRGAN_tile",
+        "label": "Tile size for ESRGAN upscalers."
+    },
+    {
+        "name": "ESRGAN_tile_overlap",
+        "label": "Tile overlap for ESRGAN upscalers."
+    },
+    {
+        "name": "realesrgan_enabled_models",
+        "label": "Select which Real-ESRGAN models to show in the web UI."
+    },
+    {
+        "name": "upscaler_for_img2img",
+        "label": "Upscaler for img2img"
+    },
+    {
+        "name": "ldsr_steps",
+        "label": "LDSR processing steps. Lower = faster"
+    },
+    {
+        "name": "ldsr_cached",
+        "label": "Cache LDSR model in memory"
+    },
+    {
+        "name": "SCUNET_tile",
+        "label": "Tile size for SCUNET upscalers."
+    },
+    {
+        "name": "SCUNET_tile_overlap",
+        "label": "Tile overlap for SCUNET upscalers."
+    },
+    {
+        "name": "SWIN_tile",
+        "label": "Tile size for all SwinIR."
+    },
+    {
+        "name": "SWIN_tile_overlap",
+        "label": "Tile overlap, in pixels for SwinIR. Low values = visible seam."
+    },
+    {
+        "name": "SWIN_torch_compile",
+        "label": "Use torch.compile to accelerate SwinIR."
+    },
+    {
+        "name": "face_restoration",
+        "label": "Restore faces"
+    },
+    {
+        "name": "face_restoration_model",
+        "label": "Face restoration model"
+    },
+    {
+        "name": "code_former_weight",
+        "label": "CodeFormer weight"
+    },
+    {
+        "name": "face_restoration_unload",
+        "label": "Move face restoration model from VRAM into RAM after processing"
+    },
+    {
+        "name": "auto_launch_browser",
+        "label": "Automatically open webui in browser on startup"
+    },
+    {
+        "name": "enable_console_prompts",
+        "label": "Print prompts to console when generating with txt2img and img2img."
+    },
+    {
+        "name": "show_warnings",
+        "label": "Show warnings in console."
+    },
+    {
+        "name": "show_gradio_deprecation_warnings",
+        "label": "Show gradio deprecation warnings in console."
+    },
+    {
+        "name": "memmon_poll_rate",
+        "label": "VRAM usage polls per second during generation."
+    },
+    {
+        "name": "samples_log_stdout",
+        "label": "Always print all generation info to standard output"
+    },
+    {
+        "name": "multiple_tqdm",
+        "label": "Add a second progress bar to the console that shows progress for an entire job."
+    },
+    {
+        "name": "print_hypernet_extra",
+        "label": "Print extra hypernetwork information to console."
+    },
+    {
+        "name": "list_hidden_files",
+        "label": "Load models/files in hidden directories"
+    },
+    {
+        "name": "disable_mmap_load_safetensors",
+        "label": "Disable memmapping for loading .safetensors files."
+    },
+    {
+        "name": "hide_ldm_prints",
+        "label": "Prevent Stability-AI's ldm/sgm modules from printing noise to console."
+    },
+    {
+        "name": "api_enable_requests",
+        "label": "Allow http:// and https:// URLs for input images in API"
+    },
+    {
+        "name": "api_forbid_local_requests",
+        "label": "Forbid URLs to local resources"
+    },
+    {
+        "name": "api_useragent",
+        "label": "User agent for requests"
+    },
+    {
+        "name": "unload_models_when_training",
+        "label": "Move VAE and CLIP to RAM when training if possible. Saves VRAM."
+    },
+    {
+        "name": "pin_memory",
+        "label": "Turn on pin_memory for DataLoader. Makes training slightly faster but can increase memory usage."
+    },
+    {
+        "name": "save_optimizer_state",
+        "label": "Saves Optimizer state as separate *.optim file. Training of embedding or HN can be resumed with the matching optim file."
+    },
+    {
+        "name": "save_training_settings_to_txt",
+        "label": "Save textual inversion and hypernet settings to a text file whenever training starts."
+    },
+    {
+        "name": "dataset_filename_word_regex",
+        "label": "Filename word regex"
+    },
+    {
+        "name": "dataset_filename_join_string",
+        "label": "Filename join string"
+    },
+    {
+        "name": "training_image_repeats_per_epoch",
+        "label": "Number of repeats for a single input image per epoch; used only for displaying epoch number"
+    },
+    {
+        "name": "training_write_csv_every",
+        "label": "Save an csv containing the loss to log directory every N steps, 0 to disable"
+    },
+    {
+        "name": "training_xattention_optimizations",
+        "label": "Use cross attention optimizations while training"
+    },
+    {
+        "name": "training_enable_tensorboard",
+        "label": "Enable tensorboard logging."
+    },
+    {
+        "name": "training_tensorboard_save_images",
+        "label": "Save generated images within tensorboard."
+    },
+    {
+        "name": "training_tensorboard_flush_every",
+        "label": "How often, in seconds, to flush the pending tensorboard events and summaries to disk."
+    },
+    {
+        "name": "sd_model_checkpoint",
+        "label": "Stable Diffusion checkpoint"
+    },
+    {
+        "name": "sd_checkpoints_limit",
+        "label": "Maximum number of checkpoints loaded at the same time"
+    },
+    {
+        "name": "sd_checkpoints_keep_in_cpu",
+        "label": "Only keep one model on device"
+    },
+    {
+        "name": "sd_checkpoint_cache",
+        "label": "Checkpoints to cache in RAM"
+    },
+    {
+        "name": "sd_unet",
+        "label": "SD Unet"
+    },
+    {
+        "name": "enable_quantization",
+        "label": "Enable quantization in K samplers for sharper and cleaner results. This may change existing seeds"
+    },
+    {
+        "name": "enable_emphasis",
+        "label": "Enable emphasis"
+    },
+    {
+        "name": "enable_batch_seeds",
+        "label": "Make K-diffusion samplers produce same images in a batch as when making a single image"
+    },
+    {
+        "name": "comma_padding_backtrack",
+        "label": "Prompt word wrap length limit"
+    },
+    {
+        "name": "CLIP_stop_at_last_layers",
+        "label": "Clip skip"
+    },
+    {
+        "name": "upcast_attn",
+        "label": "Upcast cross attention layer to float32"
+    },
+    {
+        "name": "randn_source",
+        "label": "Random number generator source."
+    },
+    {
+        "name": "tiling",
+        "label": "Tiling"
+    },
+    {
+        "name": "hires_fix_refiner_pass",
+        "label": "Hires fix: which pass to enable refiner for"
+    },
+    {
+        "name": "sdxl_crop_top",
+        "label": "crop top coordinate"
+    },
+    {
+        "name": "sdxl_crop_left",
+        "label": "crop left coordinate"
+    },
+    {
+        "name": "sdxl_refiner_low_aesthetic_score",
+        "label": "SDXL low aesthetic score"
+    },
+    {
+        "name": "sdxl_refiner_high_aesthetic_score",
+        "label": "SDXL high aesthetic score"
+    },
+    {
+        "name": "sd_vae_explanation",
+        "label": ""
+    },
+    {
+        "name": "sd_vae_checkpoint_cache",
+        "label": "VAE Checkpoints to cache in RAM"
+    },
+    {
+        "name": "sd_vae",
+        "label": "SD VAE"
+    },
+    {
+        "name": "sd_vae_overrides_per_model_preferences",
+        "label": "Selected VAE overrides per-model preferences"
+    },
+    {
+        "name": "auto_vae_precision",
+        "label": "Automatically revert VAE to 32-bit floats"
+    },
+    {
+        "name": "sd_vae_encode_method",
+        "label": "VAE type for encode"
+    },
+    {
+        "name": "sd_vae_decode_method",
+        "label": "VAE type for decode"
+    },
+    {
+        "name": "inpainting_mask_weight",
+        "label": "Inpainting conditioning mask strength"
+    },
+    {
+        "name": "initial_noise_multiplier",
+        "label": "Noise multiplier for img2img"
+    },
+    {
+        "name": "img2img_extra_noise",
+        "label": "Extra noise multiplier for img2img and hires fix"
+    },
+    {
+        "name": "img2img_color_correction",
+        "label": "Apply color correction to img2img results to match original colors."
+    },
+    {
+        "name": "img2img_fix_steps",
+        "label": "With img2img, do exactly the amount of steps the slider specifies."
+    },
+    {
+        "name": "img2img_background_color",
+        "label": "With img2img, fill transparent parts of the input image with this color."
+    },
+    {
+        "name": "img2img_editor_height",
+        "label": "Height of the image editor"
+    },
+    {
+        "name": "img2img_sketch_default_brush_color",
+        "label": "Sketch initial brush color"
+    },
+    {
+        "name": "img2img_inpaint_mask_brush_color",
+        "label": "Inpaint mask brush color"
+    },
+    {
+        "name": "img2img_inpaint_sketch_default_brush_color",
+        "label": "Inpaint sketch initial brush color"
+    },
+    {
+        "name": "return_mask",
+        "label": "For inpainting, include the greyscale mask in results for web"
+    },
+    {
+        "name": "return_mask_composite",
+        "label": "For inpainting, include masked composite in results for web"
+    },
+    {
+        "name": "cross_attention_optimization",
+        "label": "Cross attention optimization"
+    },
+    {
+        "name": "s_min_uncond",
+        "label": "Negative Guidance minimum sigma"
+    },
+    {
+        "name": "token_merging_ratio",
+        "label": "Token merging ratio"
+    },
+    {
+        "name": "token_merging_ratio_img2img",
+        "label": "Token merging ratio for img2img"
+    },
+    {
+        "name": "token_merging_ratio_hr",
+        "label": "Token merging ratio for high-res pass"
+    },
+    {
+        "name": "pad_cond_uncond",
+        "label": "Pad prompt/negative prompt to be same length"
+    },
+    {
+        "name": "persistent_cond_cache",
+        "label": "Persistent cond cache"
+    },
+    {
+        "name": "batch_cond_uncond",
+        "label": "Batch cond/uncond"
+    },
+    {
+        "name": "use_old_emphasis_implementation",
+        "label": "Use old emphasis implementation. Can be useful to reproduce old seeds."
+    },
+    {
+        "name": "use_old_karras_scheduler_sigmas",
+        "label": "Use old karras scheduler sigmas (0.1 to 10)."
+    },
+    {
+        "name": "no_dpmpp_sde_batch_determinism",
+        "label": "Do not make DPM++ SDE deterministic across different batch sizes."
+    },
+    {
+        "name": "use_old_hires_fix_width_height",
+        "label": "For hires fix, use width/height sliders to set final resolution rather than first pass (disables Upscale by, Resize width/height to)."
+    },
+    {
+        "name": "dont_fix_second_order_samplers_schedule",
+        "label": "Do not fix prompt schedule for second order samplers."
+    },
+    {
+        "name": "hires_fix_use_firstpass_conds",
+        "label": "For hires fix, calculate conds of second pass using extra networks of first pass."
+    },
+    {
+        "name": "use_old_scheduling",
+        "label": "Use old prompt editing timelines."
+    },
+    {
+        "name": "lora_functional",
+        "label": "Lora/Networks: use old method that takes longer when you have multiple Loras active and produces same results as kohya-ss/sd-webui-additional-networks extension"
+    },
+    {
+        "name": "interrogate_keep_models_in_memory",
+        "label": "Keep models in VRAM"
+    },
+    {
+        "name": "interrogate_return_ranks",
+        "label": "Include ranks of model tags matches in results."
+    },
+    {
+        "name": "interrogate_clip_num_beams",
+        "label": "BLIP: num_beams"
+    },
+    {
+        "name": "interrogate_clip_min_length",
+        "label": "BLIP: minimum description length"
+    },
+    {
+        "name": "interrogate_clip_max_length",
+        "label": "BLIP: maximum description length"
+    },
+    {
+        "name": "interrogate_clip_dict_limit",
+        "label": "CLIP: maximum number of lines in text file"
+    },
+    {
+        "name": "interrogate_clip_skip_categories",
+        "label": "CLIP: skip inquire categories"
+    },
+    {
+        "name": "interrogate_deepbooru_score_threshold",
+        "label": "deepbooru: score threshold"
+    },
+    {
+        "name": "deepbooru_sort_alpha",
+        "label": "deepbooru: sort tags alphabetically"
+    },
+    {
+        "name": "deepbooru_use_spaces",
+        "label": "deepbooru: use spaces in tags"
+    },
+    {
+        "name": "deepbooru_escape",
+        "label": "deepbooru: escape (\\) brackets"
+    },
+    {
+        "name": "deepbooru_filter_tags",
+        "label": "deepbooru: filter out those tags"
+    },
+    {
+        "name": "extra_networks_show_hidden_directories",
+        "label": "Show hidden directories"
+    },
+    {
+        "name": "extra_networks_hidden_models",
+        "label": "Show cards for models in hidden directories"
+    },
+    {
+        "name": "extra_networks_default_multiplier",
+        "label": "Default multiplier for extra networks"
+    },
+    {
+        "name": "extra_networks_card_width",
+        "label": "Card width for Extra Networks"
+    },
+    {
+        "name": "extra_networks_card_height",
+        "label": "Card height for Extra Networks"
+    },
+    {
+        "name": "extra_networks_card_text_scale",
+        "label": "Card text scale"
+    },
+    {
+        "name": "extra_networks_card_show_desc",
+        "label": "Show description on card"
+    },
+    {
+        "name": "extra_networks_add_text_separator",
+        "label": "Extra networks separator"
+    },
+    {
+        "name": "ui_extra_networks_tab_reorder",
+        "label": "Extra networks tab order"
+    },
+    {
+        "name": "textual_inversion_print_at_load",
+        "label": "Print a list of Textual Inversion embeddings when loading model"
+    },
+    {
+        "name": "textual_inversion_add_hashes_to_infotext",
+        "label": "Add Textual Inversion hashes to infotext"
+    },
+    {
+        "name": "sd_hypernetwork",
+        "label": "Add hypernetwork to prompt"
+    },
+    {
+        "name": "sd_lora",
+        "label": "Add network to prompt"
+    },
+    {
+        "name": "lora_preferred_name",
+        "label": "When adding to prompt, refer to Lora by"
+    },
+    {
+        "name": "lora_add_hashes_to_infotext",
+        "label": "Add Lora hashes to infotext"
+    },
+    {
+        "name": "lora_show_all",
+        "label": "Always show all networks on the Lora page"
+    },
+    {
+        "name": "lora_hide_unknown_for_versions",
+        "label": "Hide networks of unknown versions for model versions"
+    },
+    {
+        "name": "lora_in_memory_limit",
+        "label": "Number of Lora networks to keep cached in memory"
+    },
+    {
+        "name": "localization",
+        "label": "Localization"
+    },
+    {
+        "name": "gradio_theme",
+        "label": "Gradio theme"
+    },
+    {
+        "name": "gradio_themes_cache",
+        "label": "Cache gradio themes locally"
+    },
+    {
+        "name": "gallery_height",
+        "label": "Gallery height"
+    },
+    {
+        "name": "return_grid",
+        "label": "Show grid in results for web"
+    },
+    {
+        "name": "do_not_show_images",
+        "label": "Do not show any images in results for web"
+    },
+    {
+        "name": "send_seed",
+        "label": "Send seed when sending prompt or image to other interface"
+    },
+    {
+        "name": "send_size",
+        "label": "Send size when sending prompt or image to another interface"
+    },
+    {
+        "name": "js_modal_lightbox",
+        "label": "Enable full page image viewer"
+    },
+    {
+        "name": "js_modal_lightbox_initially_zoomed",
+        "label": "Show images zoomed in by default in full page image viewer"
+    },
+    {
+        "name": "js_modal_lightbox_gamepad",
+        "label": "Navigate image viewer with gamepad"
+    },
+    {
+        "name": "js_modal_lightbox_gamepad_repeat",
+        "label": "Gamepad repeat period, in milliseconds"
+    },
+    {
+        "name": "show_progress_in_title",
+        "label": "Show generation progress in window title."
+    },
+    {
+        "name": "samplers_in_dropdown",
+        "label": "Use dropdown for sampler selection instead of radio group"
+    },
+    {
+        "name": "dimensions_and_batch_together",
+        "label": "Show Width/Height and Batch sliders in same row"
+    },
+    {
+        "name": "keyedit_precision_attention",
+        "label": "Ctrl+up/down precision when editing (attention:1.1)"
+    },
+    {
+        "name": "keyedit_precision_extra",
+        "label": "Ctrl+up/down precision when editing <extra networks:0.9>"
+    },
+    {
+        "name": "keyedit_delimiters",
+        "label": "Ctrl+up/down word delimiters"
+    },
+    {
+        "name": "keyedit_move",
+        "label": "Alt+left/right moves prompt elements"
+    },
+    {
+        "name": "quicksettings_list",
+        "label": "Quicksettings list"
+    },
+    {
+        "name": "ui_tab_order",
+        "label": "UI tab order"
+    },
+    {
+        "name": "hidden_tabs",
+        "label": "Hidden UI tabs"
+    },
+    {
+        "name": "ui_reorder_list",
+        "label": "txt2img/img2img UI item order"
+    },
+    {
+        "name": "hires_fix_show_sampler",
+        "label": "Hires fix: show hires checkpoint and sampler selection"
+    },
+    {
+        "name": "hires_fix_show_prompts",
+        "label": "Hires fix: show hires prompt and negative prompt"
+    },
+    {
+        "name": "disable_token_counters",
+        "label": "Disable prompt token counters"
+    },
+    {
+        "name": "extra_options_txt2img",
+        "label": "Options in main UI - txt2img"
+    },
+    {
+        "name": "extra_options_img2img",
+        "label": "Options in main UI - img2img"
+    },
+    {
+        "name": "extra_options_cols",
+        "label": "Options in main UI - number of columns"
+    },
+    {
+        "name": "extra_options_accordion",
+        "label": "Options in main UI - place into an accordion"
+    },
+    {
+        "name": "add_model_hash_to_info",
+        "label": "Add model hash to generation information"
+    },
+    {
+        "name": "add_model_name_to_info",
+        "label": "Add model name to generation information"
+    },
+    {
+        "name": "add_user_name_to_info",
+        "label": "Add user name to generation information when authenticated"
+    },
+    {
+        "name": "add_version_to_infotext",
+        "label": "Add program version to generation information"
+    },
+    {
+        "name": "disable_weights_auto_swap",
+        "label": "Disregard checkpoint information from pasted infotext"
+    },
+    {
+        "name": "infotext_styles",
+        "label": "Infer styles from prompts of pasted infotext"
+    },
+    {
+        "name": "show_progressbar",
+        "label": "Show progressbar"
+    },
+    {
+        "name": "live_previews_enable",
+        "label": "Show live previews of the created image"
+    },
+    {
+        "name": "live_previews_image_format",
+        "label": "Live preview file format"
+    },
+    {
+        "name": "show_progress_grid",
+        "label": "Show previews of all images generated in a batch as a grid"
+    },
+    {
+        "name": "show_progress_every_n_steps",
+        "label": "Live preview display period"
+    },
+    {
+        "name": "show_progress_type",
+        "label": "Live preview method"
+    },
+    {
+        "name": "live_preview_allow_lowvram_full",
+        "label": "Allow Full live preview method with lowvram/medvram"
+    },
+    {
+        "name": "live_preview_content",
+        "label": "Live preview subject"
+    },
+    {
+        "name": "live_preview_refresh_period",
+        "label": "Progressbar and preview update period"
+    },
+    {
+        "name": "live_preview_fast_interrupt",
+        "label": "Return image with chosen live preview method on interrupt"
+    },
+    {
+        "name": "hide_samplers",
+        "label": "Hide samplers in user interface"
+    },
+    {
+        "name": "eta_ddim",
+        "label": "Eta for DDIM"
+    },
+    {
+        "name": "eta_ancestral",
+        "label": "Eta for k-diffusion samplers"
+    },
+    {
+        "name": "ddim_discretize",
+        "label": "img2img DDIM discretize"
+    },
+    {
+        "name": "s_churn",
+        "label": "sigma churn"
+    },
+    {
+        "name": "s_tmin",
+        "label": "sigma tmin"
+    },
+    {
+        "name": "s_tmax",
+        "label": "sigma tmax"
+    },
+    {
+        "name": "s_noise",
+        "label": "sigma noise"
+    },
+    {
+        "name": "k_sched_type",
+        "label": "Scheduler type"
+    },
+    {
+        "name": "sigma_min",
+        "label": "sigma min"
+    },
+    {
+        "name": "sigma_max",
+        "label": "sigma max"
+    },
+    {
+        "name": "rho",
+        "label": "rho"
+    },
+    {
+        "name": "eta_noise_seed_delta",
+        "label": "Eta noise seed delta"
+    },
+    {
+        "name": "always_discard_next_to_last_sigma",
+        "label": "Always discard next-to-last sigma"
+    },
+    {
+        "name": "sgm_noise_multiplier",
+        "label": "SGM noise multiplier"
+    },
+    {
+        "name": "uni_pc_variant",
+        "label": "UniPC variant"
+    },
+    {
+        "name": "uni_pc_skip_type",
+        "label": "UniPC skip type"
+    },
+    {
+        "name": "uni_pc_order",
+        "label": "UniPC order"
+    },
+    {
+        "name": "uni_pc_lower_order_final",
+        "label": "UniPC lower order final"
+    },
+    {
+        "name": "postprocessing_enable_in_main_ui",
+        "label": "Enable postprocessing operations in txt2img and img2img tabs"
+    },
+    {
+        "name": "postprocessing_operation_order",
+        "label": "Postprocessing operation order"
+    },
+    {
+        "name": "upscaling_max_images_in_cache",
+        "label": "Maximum number of images in upscaling cache"
+    },
+    {
+        "name": "disabled_extensions",
+        "label": "Disable these extensions"
+    },
+    {
+        "name": "disable_all_extensions",
+        "label": "Disable all extensions (preserves the list of disabled extensions)"
+    },
+    {
+        "name": "restore_config_state_file",
+        "label": "Config state file to restore from, under 'config-states/' folder"
+    },
+    {
+        "name": "sd_checkpoint_hash",
+        "label": "SHA256 hash of the current checkpoint"
+    },
+    {
+        "name": "canvas_hotkey_zoom",
+        "label": "Zoom canvas"
+    },
+    {
+        "name": "canvas_hotkey_adjust",
+        "label": "Adjust brush size"
+    },
+    {
+        "name": "canvas_hotkey_move",
+        "label": "Moving the canvas"
+    },
+    {
+        "name": "canvas_hotkey_fullscreen",
+        "label": "Fullscreen Mode, maximizes the picture so that it fits into the screen and stretches it to its full width "
+    },
+    {
+        "name": "canvas_hotkey_reset",
+        "label": "Reset zoom and canvas positon"
+    },
+    {
+        "name": "canvas_hotkey_overlap",
+        "label": "Toggle overlap"
+    },
+    {
+        "name": "canvas_show_tooltip",
+        "label": "Enable tooltip on the canvas"
+    },
+    {
+        "name": "canvas_auto_expand",
+        "label": "Automatically expands an image that does not fit completely in the canvas area, similar to manually pressing the S and R buttons"
+    },
+    {
+        "name": "canvas_blur_prompt",
+        "label": "Take the focus off the prompt when working with a canvas"
+    },
+    {
+        "name": "canvas_disabled_functions",
+        "label": "Disable function that you don't use"
+    },
+    {
+        "name": "ch_open_url_with_js",
+        "label": "Open model Url on the user's client side, rather than server side"
+    },
+    {
+        "name": "ch_always_display",
+        "label": "Always Display Buttons on model cards"
+    },
+    {
+        "name": "ch_show_btn_on_thumb",
+        "label": "Show Button On Thumb Mode in SD webui versions before 1.5.0"
+    },
+    {
+        "name": "ch_max_size_preview",
+        "label": "Download Max Size Preview"
+    },
+    {
+        "name": "ch_skip_nsfw_preview",
+        "label": "Skip NSFW Preview Images"
+    },
+    {
+        "name": "ch_dl_webui_metadata",
+        "label": "Also add data for WebUI metadata editor"
+    },
+    {
+        "name": "ch_proxy",
+        "label": "Proxy to use for fetching models and model data. Format:  http://127.0.0.1:port"
+    },
+    {
+        "name": "styles_ui",
+        "label": "How should Style Names Rendered on UI"
+    },
+    {
+        "name": "enable_styleselector_by_default",
+        "label": "enable Style Selector by default"
+    },
+    {
+        "name": "control_net_detectedmap_dir",
+        "label": "Directory for detected maps auto saving"
+    },
+    {
+        "name": "control_net_models_path",
+        "label": "Extra path to scan for ControlNet models (e.g. training output directory)"
+    },
+    {
+        "name": "control_net_modules_path",
+        "label": "Path to directory containing annotator model directories (requires restart, overrides corresponding command line flag)"
+    },
+    {
+        "name": "control_net_unit_count",
+        "label": "Multi-ControlNet: ControlNet unit number (requires restart)"
+    },
+    {
+        "name": "control_net_model_cache_size",
+        "label": "Model cache size (requires restart)"
+    },
+    {
+        "name": "control_net_inpaint_blur_sigma",
+        "label": "ControlNet inpainting Gaussian blur sigma"
+    },
+    {
+        "name": "control_net_no_high_res_fix",
+        "label": "Do not apply ControlNet during highres fix"
+    },
+    {
+        "name": "control_net_no_detectmap",
+        "label": "Do not append detectmap to output"
+    },
+    {
+        "name": "control_net_detectmap_autosaving",
+        "label": "Allow detectmap auto saving"
+    },
+    {
+        "name": "control_net_allow_script_control",
+        "label": "Allow other script to control this extension"
+    },
+    {
+        "name": "control_net_sync_field_args",
+        "label": "Paste ControlNet parameters in infotext"
+    },
+    {
+        "name": "controlnet_show_batch_images_in_ui",
+        "label": "Show batch images in gradio gallery output"
+    },
+    {
+        "name": "controlnet_increment_seed_during_batch",
+        "label": "Increment seed after each controlnet batch iteration"
+    },
+    {
+        "name": "controlnet_disable_control_type",
+        "label": "Disable control type selection"
+    },
+    {
+        "name": "controlnet_disable_openpose_edit",
+        "label": "Disable openpose edit"
+    },
+    {
+        "name": "controlnet_ignore_noninpaint_mask",
+        "label": "Ignore mask on ControlNet input image if control type is not inpaint"
+    }
+]
