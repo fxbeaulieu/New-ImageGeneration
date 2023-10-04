@@ -94,7 +94,7 @@ Catherine Nolin
 P.A. Works
 Nikolina Petolas
 Humberto Ramos
-RHAS
+RHADS
 Alex Ross
 Cyril Rolando
 Paolo Roversi
