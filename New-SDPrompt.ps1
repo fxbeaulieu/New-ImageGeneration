@@ -67,7 +67,7 @@ $Global:NegativeEmbeddings = "HandNeg-neg CyberRealistic_Negative-neg easynegati
 $Global:DirectionKeywords = @("Cel shaded","Detailed illustration","Realistic","Masterpiece","Screen print","Rough sketch","Technical illustration","Ultra detailed","Ultrarealistic","Visual novel")
 
 $Global:StylesDetails = Get-Content -Path "$PSScriptRoot\styles.json" | ConvertFrom-Json
-[int]$Global:RandomStyleSelectorMaxValue = (Get-Content "$PSScriptRoot\Styles.txt" | Measure-Object)-1
+[int]$Global:RandomStyleSelectorMaxValue = ((Get-Content "$PSScriptRoot\Styles.txt" | Measure-Object).Count)-1
 
 class PromptGenerationParameters{
     [string]$Prompt
@@ -81,17 +81,11 @@ class PromptGenerationParameters{
 
 class GenerationParameters{
     [string]$Sampler
-    [ValidateRange(1,30)]
     [int]$Attention
-    [ValidateRange(512,1920)]
     [int]$ResolutionW
-    [ValidateRange(512,1920)]
     [int]$ResolutionH
-    [ValidateRange(0,18446744073709551616)]
     [Int64]$Seed
-    [ValidateRange(20, 150)]
     [int]$Steps
-    [ValidateRange(1,100)]
     [int]$NumberIteration
 }
 
@@ -140,7 +134,7 @@ function Get-UserPromptInput {
                 $Styles+=$Style
             }
             $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Styles)
-            $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options)
+            $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, 0)
             $UserInput = $Styles[$UserInputValue]
         }
         ConceptualKeywords {
@@ -156,16 +150,16 @@ function Get-UserPromptInput {
             $UserInput = @()
             While ($Count -lt 3)
             {
-                Read-Host -Prompt "Ajouter un mot-clef conceptuel ? (O/N)"
-                while ($UserStopped -notlike "o" -or $UserStopped -notlike "n")
+                $UserStopped = Read-Host -Prompt "Ajouter un mot-clef conceptuel ? (O/N)"
+                while ($UserStopped -notlike "o" -and $UserStopped -notlike "n")
                 {
-                    Read-Host -Prompt "Ajouter un mot-clef conceptuel ? (O/N)"
+                    $UserStopped = Read-Host -Prompt "Ajouter un mot-clef conceptuel ? (O/N)"
                 }
                 if($UserStopped -like "n")
                 {
                     Return $UserInput
                 }
-                $UserInputValue = $Host.IHostUISupportsMultipleChoiceSelection.PromptForChoice($Title, $Hint, $Options)
+                $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, "")
                 $UserInput += $ConceptualKeywords[$UserInputValue]
                 ++$Count
             }
@@ -174,7 +168,7 @@ function Get-UserPromptInput {
             $Title = "La direction artistique que doit prendre le modèle pour générer l'image: "
             $Hint = "Faire votre choix parmi les options affichées"
             $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Global:DirectionKeywords)
-            $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options)
+            $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, 0)
             $UserInput = $DirectionKeywords[$UserInputValue]
         }
         MoodKeywords
@@ -191,16 +185,16 @@ function Get-UserPromptInput {
             $UserInput = @()
             While ($Count -lt 3)
             {
-                Read-Host -Prompt "Ajouter un mot-clef émotif ? (O/N)"
-                while ($UserStopped -notlike "o" -or $UserStopped -notlike "n")
+                $UserStopped = Read-Host -Prompt "Ajouter un mot-clef émotif ? (O/N)"
+                while ($UserStopped -notlike "o" -and $UserStopped -notlike "n")
                 {
-                    Read-Host -Prompt "Ajouter un mot-clef émotif ? (O/N)"
+                    $UserStopped = Read-Host -Prompt "Ajouter un mot-clef émotif ? (O/N)"
                 }
                 if($UserStopped -like "n")
                 {
                     Return $UserInput
                 }
-                $UserInputValue = $Host.UI.IHostUISupportsMultipleChoiceSelection.PromptForChoice($Title, $Hint, $Options)
+                $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, 0)
                 $UserInput += $MoodKeywords[$UserInputValue]
                 ++$Count
             }
@@ -219,16 +213,16 @@ function Get-UserPromptInput {
             $UserInput = @()
             while ($Count -lt 3)
             {
-                Read-Host -Prompt "Ajouter un artiste ? (O/N)"
-                while ($UserStopped -notlike "o" -or $UserStopped -notlike "n")
+                $UserStopped = Read-Host -Prompt "Ajouter un artiste ? (O/N)"
+                while ($UserStopped -notlike "o" -and $UserStopped -notlike "n")
                 {
-                    Read-Host -Prompt "Ajouter un artiste ? (O/N)"
+                    $UserStopped = Read-Host -Prompt "Ajouter un artiste ? (O/N)"
                 }
                 if($UserStopped -like "n")
                 {
                     Return $UserInput
                 }
-                $UserInputValue = $Host.IHostUISupportsMultipleChoiceSelection.PromptForChoice($Title, $Hint, $Options)
+                $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, 0)
                 $UserInput += $Artists[$UserInputValue]
                 ++$Count
             }
@@ -240,7 +234,7 @@ function Get-UserPromptInput {
             $Title = "Sampler qui doit être utilisé: "
             $Hint = "Faire votre choix parmi les options affichées"
             $Options = [System.Management.Automation.Host.ChoiceDescription[]]($SamplersList)
-            $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options)
+            $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, 0)
             $GeneralParameters.Sampler = $SamplersList[$UserInputValue]
             $GeneralParameters.Attention = Read-Host -Prompt "Niveau d'attention que doit avoir le modèle par rapport au contenu de votre prompt durant la génération ? (Nombre entre 1 et 30)"
             $GeneralParameters.ResolutionW = Read-Host -Prompt "Largeur de l'image à générer (Taille en pixels entre 512 et 1920) ?"
@@ -519,6 +513,14 @@ function Invoke-SDAPI {
 }
 
 function Invoke-PromptGenerator {
+    param(
+        [Parameter()]
+        [switch]
+        $WebUI,
+        [Parameter()]
+        [switch]
+        $API
+    )
     Get-PromptComponents
     $FormatedPrompt = Format-PromptComponents
 
@@ -565,5 +567,12 @@ function Invoke-PromptGenerator {
             }
         }
         Test-Parameters
-        Invoke-PromptGenerator
+        if($WebUI)
+        {
+        Invoke-PromptGenerator -WebUI
+        }
+        if($API)
+        {
+        Invoke-PromptGenerator -API
+        }
     }
