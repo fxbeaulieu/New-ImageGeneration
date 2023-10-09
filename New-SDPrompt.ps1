@@ -30,6 +30,10 @@ param (
     [switch]
     $API,
 
+    [Parameter(ParameterSetName="Generate")]
+    [string]
+    $ParametersTemplatePath,
+
     # Pour afficher tous les artistes disponibles
     [Parameter(ParameterSetName="ScriptOptionsArtistList")]
     [switch]
@@ -51,11 +55,17 @@ param (
     $ShowMoodKeywordsList
 )
 
+$Global:TemplatePath = $ParametersTemplatePath
 $Global:OutputDirectory = "$ENV:USERPROFILE\Documents\sd_generation_parameters_saved"
+$Global:PicOutputDirectory = "$ENV:USERPROFILE\Pictures\SDMonster"
 
 if (! (Test-Path -Path $Global:OutputDirectory))
 {
     New-Item -Path (Split-Path -Path $Global:OutputDirectory -Parent) -Name (Split-Path -Path $Global:OutputDirectory -LeafBase) -ItemType Directory -Force
+}
+if (! (Test-Path -Path $Global:PicOutputDirectory))
+{
+    New-Item -Path (Split-Path -Path $Global:PicOutputDirectory -Parent) -Name (Split-Path -Path $Global:PicOutputDirectory -LeafBase) -ItemType Directory -Force
 }
 
 $Global:BasicNegative = "mutation, deformed, deformed iris, duplicate, morbid, mutilated, disfigured, poorly drawn hand, poorly drawn face, bad proportions, gross proportions, extra limbs, cloned face, long neck, malformed limbs, missing arm, missing leg, extra arm, extra leg, fused fingers, too many fingers, extra fingers, mutated hands, blurry, bad anatomy, out of frame, contortionist, contorted limbs, exaggerated features, disproportionate, twisted posture, unnatural pose, disconnected, disproportionate, warped, misshapen, out of scale, "
@@ -236,14 +246,14 @@ function Get-UserPromptInput {
             $Options = [System.Management.Automation.Host.ChoiceDescription[]]($SamplersList)
             $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, 0)
             $GeneralParameters.Sampler = $SamplersList[$UserInputValue]
-            $GeneralParameters.Attention = Read-Host -Prompt "Niveau d'attention que doit avoir le modèle par rapport au contenu de votre prompt durant la génération ? (Nombre entre 1 et 30)"
-            $GeneralParameters.ResolutionW = Read-Host -Prompt "Largeur de l'image à générer (Taille en pixels entre 512 et 1920) ?"
-            $GeneralParameters.ResolutionH = Read-Host -Prompt "Hauteur de l'image à générer (Taille en pixels entre 512 et 1920) ?"
-            $GeneralParameters.Steps = Read-Host -Prompt "Le nombre d'étapes de génération utilisées pour concevoir votre image (Nombre entre 20 et 150)"
-            $GeneralParameters.NumberIteration = Read-Host -Prompt "Le nombre d'images à générer avec vos paramètres (Nombre entre 1 et 100) ?"
+            $GeneralParameters.Attention = Read-Host -Prompt "Niveau d'attention que doit avoir le modèle par rapport au contenu de votre prompt durant la génération ? (Nombre entre 1 et 30)`nDefault = 7"
+            $GeneralParameters.ResolutionW = Read-Host -Prompt "Largeur de l'image à générer (Taille en pixels entre 512 et 1920) ?`nDefault = 512 (SD) / 1024 (XL)"
+            $GeneralParameters.ResolutionH = Read-Host -Prompt "Hauteur de l'image à générer (Taille en pixels entre 512 et 1920) ?`nDefault = 512 (SD) / 1024 (XL)"
+            $GeneralParameters.Steps = Read-Host -Prompt "Le nombre d'étapes de génération utilisées pour concevoir votre image (Nombre entre 20 et 150)`nDefault = 20"
+            $GeneralParameters.NumberIteration = Read-Host -Prompt "Le nombre d'images à générer avec vos paramètres (Nombre entre 1 et 100) ?`nDefault = 1"
             if($GeneralParameters.NumberIteration -eq 1)
             {
-                $GeneralParameters.Seed = Read-Host -Prompt "Le seed pour débuter la génération de l'image (Nombre entier entre 1 et 2^64, vous pouvez inscrire 0 pour «aléatoire»)"
+                $GeneralParameters.Seed = Read-Host -Prompt "Le seed pour débuter la génération de l'image (Nombre entier entre 1 et 2^64, vous pouvez inscrire 0 pour «aléatoire»)`nDefault = 0"
                 Return $GeneralParameters
             }
             $GeneralParameters.Seed = 0
@@ -348,12 +358,18 @@ function Get-PromptComponents {
 }
 
 function Format-PromptComponents {
-    [string]$ConceptualKeywordsToPrompt = Format-ConceptualKeywordsToPrompt -ConceptualKeywords $Global:PromptParameters.ConceptualKeywords
+    if($null -eq $Global:PromptParameters.ConceptualKeywords)
+    {$Global:PromptParameters.ConceptualKeywords = ""}
+    else{[string]$ConceptualKeywordsToPrompt = Format-ConceptualKeywordsToPrompt -ConceptualKeywords $Global:PromptParameters.ConceptualKeywords}
     [string]$DirectionKeywordToPrompt = Format-DirectionKeywordToPrompt -DirectionKeyword $Global:PromptParameters.DirectionKeyword
-    [string]$MoodKeywordsToPrompt = Format-MoodKeywordsToPrompt -MoodKeywords $Global:PromptParameters.MoodKeywords
+    if($null -eq $Global:PromptParameters.MoodKeywords)
+    {$Global:PromptParameters.MoodKeywords = ""}
+    else{[string]$MoodKeywordsToPrompt = Format-MoodKeywordsToPrompt -MoodKeywords $Global:PromptParameters.MoodKeywords}
     [string]$SelectedArtStylePrompt,[string]$SelectedArtStyleNegativePrompt = Format-StyleToPrompt -ArtStyle $Global:PromptParameters.PictureArtStyle
     [string]$StyledPrompt = $SelectedArtStylePrompt.Replace('<<PROMPT HERE>>', $Global:PromptParameters.Prompt)
-    [string]$ArtistsToPrompt = Format-ArtistsToPrompt -Artists $Global:PromptParameters.Artists
+    if($null -eq $Global:PromptParameters.Artists)
+    {$Global:PromptParameters.Artists = ""}
+    else{[string]$ArtistsToPrompt = Format-ArtistsToPrompt -Artists $Global:PromptParameters.Artists}
     $StyledNegativePrompt = ($SelectedArtStyleNegativePrompt+", "+$Global:PromptParameters.NegativePrompt+", ")
     $FullUserPrompt = ($ConceptualKeywordsToPrompt+$DirectionKeywordToPrompt+$MoodKeywordsToPrompt+$StyledPrompt+$ArtistsToPrompt)
     Return $FullUserPrompt,$StyledNegativePrompt
@@ -385,6 +401,48 @@ function Out-WebUI {
     Start-Sleep -Seconds 10
 }
 
+function Invoke-FastSDAPI{
+    param(
+        [Parameter(Mandatory)]
+        [ValidateSet('SD','XL','XLT')]
+        [string]
+        $SDVersion
+    )
+
+    $IP = @{
+        XL = '192.168.4.254'
+        SD = '192.168.4.32'
+        XLT = '192.168.4.32'
+        }
+
+        if($SDVersion -eq 'SD')
+        {
+            $RequestIP = $IP.SD
+        }
+        if($SDVersion -eq 'XL')
+        {
+            $RequestIP = $IP.XL
+        }
+        if($SDVersion -eq 'XLT')
+        {
+            $RequestIP = $IP.XLT
+        }
+
+    $templatetxttoimg = (Get-Content -Path $Global:TemplatePath | ConvertFrom-Json)
+    $TxtGeneration = 'http://<IP>:64640/sdapi/v1/txt2img'
+    $TxtGeneration = $TxtGeneration.Replace('<IP>',$RequestIP)
+    if($SDVersion -eq 'XLT')
+    {
+        $TxtGeneration = $TxtGeneration.Replace('64640','64669')
+    }
+    $Base64Picture = (((Invoke-WebRequest -Uri $TxtGeneration -Method Post -ContentType "application/json" -Body ($templatetxttoimg|ConvertTo-Json)).Content)|ConvertFrom-Json).images
+    $ExportFileDate = Get-Date -Format FileDateTime
+    $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($Base64Picture))
+    $OutputPicturePath = ($Global:PicOutputDirectory+"\"+$SDVersion+$ExportFileDate+".png")
+    $Picture.Save($OutputPicturePath)
+    Return $OutputPicturePath
+}
+
 function Invoke-SDAPI {
     param (
         [Parameter(Mandatory)]
@@ -397,7 +455,7 @@ function Invoke-SDAPI {
         [GenerationParameters]
         $Parameters,
         [Parameter(Mandatory)]
-        [ValidateSet('SD','XL')]
+        [ValidateSet('SD','XL','XLT')]
         [string]
         $SDVersion
     )
@@ -405,15 +463,23 @@ function Invoke-SDAPI {
     $IP = @{
     XL = '192.168.4.254'
     SD = '192.168.4.32'
+    XLT = '192.168.4.32'
     }
 
     if($SDVersion -eq 'SD')
     {
         $RequestIP = $IP.SD
+        $DefaultSize = 512
     }
-    elseif($SDVersion -eq 'XL')
+    if($SDVersion -eq 'XL')
     {
         $RequestIP = $IP.XL
+        $DefaultSize = 1024
+    }
+    if($SDVersion -eq 'XLT')
+    {
+        $RequestIP = $IP.XLT
+        $DefaultSize = 1024
     }
 
     function Get-Models {
@@ -422,7 +488,7 @@ function Invoke-SDAPI {
             [string]
             $RequestURL
         )
-        $Models=((Invoke-WebRequest -Uri $RequestURL).Content|ConvertFrom-Json).title
+        $Models=((Invoke-WebRequest -Uri $RequestURL).Content|ConvertFrom-Json)
         Return $Models
     }
 
@@ -432,20 +498,25 @@ function Invoke-SDAPI {
             [string]
             $RequestURL
         )
-        $ActiveModel=((Invoke-WebRequest -Uri $RequestURL).Content|ConvertFrom-Json)
-        Return $ActiveModel
+        $ActiveModel=(((Invoke-WebRequest -Uri $RequestURL).Content)|ConvertFrom-Json).sd_model_checkpoint
+        Return $ActiveModel.model_name
     }
 
     function Get-UserModelChoice {
     #####
-        Write-Host "Modèle actif présentement: "+$Global:ActiveModelInfos
+        Write-Host "Modèle actif présentement: $Global:ActiveModelInfos"
         While($ChangeModel -notlike "o" -and $ChangeModel -notlike "n")
         {
             $ChangeModel = Read-Host -Prompt "Changer le modèle actif ? (O/N)"
         }
         if($ChangeModel -like "o")
         {
-            Write-Host "Liste des modèles: "+$Global:ModelsInfos
+            Write-Host "Liste des modèles: "+$Global:ModelsInfos.model_name
+            $Title = "Modèle qui doit être utilisé: "
+            $Hint = "Faire votre choix parmi les options affichées"
+            $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Global:ModelsInfos.model_name)
+            $UserInputValue = $Host.UI.PromptForChoice($Title, $Hint, $Options, 0)
+            $ModelFileName = $Global:ModelsInfos[$UserInputValue].model_name
         }
         elseif($ChangeModel -like "n")
         {
@@ -459,7 +530,9 @@ function Invoke-SDAPI {
             [string]
             $RequestURL
         )
-        $SetModelResult = ((Invoke-WebRequest -Uri $RequestURL -Method Post).Content|ConvertFrom-Json)
+        $templatesetmodel = Get-Content -Path "$PSScriptRoot\set-checkpoint-body.txt" | ConvertFrom-Json
+        $templatesetmodel.sd_model_checkpoint = $Global:SelectedModelFileName
+        $SetModelResult = ((Invoke-WebRequest -Uri $RequestURL -Method Post -ContentType "application/json" -Body $SetModelRequestBody).Content)|ConvertFrom-Json
         Return $SetModelResult
     }
 
@@ -481,35 +554,68 @@ function Invoke-SDAPI {
         [string]
         $RequestIP
         )
-
-        if($Parameters.Seed -eq 0)
+        $templatetxttoimg = Get-Content -Path "$PSScriptRoot\txttoimg-request-body.txt" | ConvertFrom-Json
+        $templatetxttoimg.prompt = $Prompt
+        $templatetxttoimg.negative_prompt = $NegativePrompt
+        if($Parameters.Seed -eq 0 -or $null -eq $Parameters.Seed)
         {
             $Parameters.Seed = [int64](Get-Random -Minimum 1 -Maximum ([Math]::Pow(2, 64)))
         }
-        $RequestBody = (Get-Content -Path "$PSScriptRoot\txttoimg-request-body.json" | ConvertFrom-Json)
-        $RequestBody.prompt = $Prompt
-        $RequestBody.negative_prompt = $NegativePrompt
-        $RequestBody.seed = $Parameters.Seed
-        $RequestBody.sampler_index = $Parameters.Sampler
-        $RequestBody.n_iter = $Parameters.NumberIteration
-        $RequestBody.steps = $Parameters.Steps
-        $RequestBody.cfg_scale = $Parameters.Attention
-        $RequestBody.width = $Parameters.ResolutionW
-        $RequestBody.height = $Parameters.ResolutionH
-        $GenerationDataBody = ($RequestBody | ConvertTo-Json)
+        [int64]$Seed = $Parameters.Seed
+        $templatetxttoimg.seed = $Seed
+
+        $Sampler = $Parameters.Sampler
+        $templatetxttoimg.sampler_index = $Sampler
+
+        if($null -eq $Parameters.NumberIteration)
+        {[int]$Parameters.NumberIteration = 1}
+        [int]$NumImg = $Parameters.NumberIteration
+        $templatetxttoimg.n_iter = $NumImg
+
+        if($null -eq $Parameters.Steps)
+        {[int]$Parameters.Steps = 20}
+        [int]$NumSteps = $Parameters.Steps
+        $templatetxttoimg.steps = $NumSteps
+
+        if($null -eq $Parameters.Attention)
+        {[int]$Parameters.Attention = 7}
+        [int]$Attention = $Parameters.Attention
+        $templatetxttoimg.cfg_scale = $Attention
+
+        if($null -eq $Parameters.ResolutionW -or $null -eq $Parameters.ResolutionH)
+        {[int]$Parameters.ResolutionH = $DefaultSize;[int]$Parameters.ResolutionW = $DefaultSize}
+        [int]$Height = $Parameters.ResolutionH
+        [int]$Width = $Parameters.ResolutionW
+        $templatetxttoimg.height = $Height
+        $templatetxttoimg.width = $Width
+
         $TxtGeneration = 'http://<IP>:64640/sdapi/v1/txt2img'
         $TxtGeneration = $TxtGeneration.Replace('<IP>',$RequestIP)
-        $DataGeneratedPicture = (Invoke-WebRequest -Uri $TxtGeneration -Method Post -Body $GenerationDataBody)
-        Return $DataGeneratedPicture
+        if($SDVersion -eq 'XLT')
+        {
+            $TxtGeneration = $TxtGeneration.Replace('64640','64669')
+        }
+        $Base64Picture = (((Invoke-WebRequest -Uri $TxtGeneration -Method Post -ContentType "application/json" -Body ($templatetxttoimg|ConvertTo-Json)).Content)|ConvertFrom-Json).images
+        $ExportFileDate = Get-Date -Format FileDateTime
+        $TemplateExportedPath = "$Global:OutputDirectory\SD_API_template_$ExportFileDate.txt"
+        Set-Content -Path $TemplateExportedPath -Value ($templatetxttoimg|ConvertTo-Json) -Force
+        Write-Host -ForegroundColor Cyan "Template de génération sauvegardé dans le fichier $TemplateExportedPath"
+        $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($Base64Picture))
+        $OutputPicturePath = ($Global:PicOutputDirectory+"\"+$SDVersion+$ExportFileDate+".png")
+        $Picture.Save($OutputPicturePath)
+        Return $OutputPicturePath
     }
 
     $Global:ActiveModelInfos = Get-ActiveModel -RequestURL $GetActiveModel.Replace('<IP>',$RequestIP)
     $Global:ModelsInfos = Get-Models -RequestURL $GetModels.Replace('<IP>',$RequestIP)
-    $ModelFileName = Get-UserModelChoice
-    $SetModelResult = Set-Model -RequestURL ($SetModel.Replace('<IP>',$RequestIP)+$ModelFileName)
+    $Global:SelectedModelFileName = Get-UserModelChoice
+    if ($Global:ActiveModelInfos -notlike $Global:SelectedModelFileName)
+    {
+        $SetModelResult = Set-Model -RequestURL ($SetModel.Replace('<IP>',$RequestIP)+$Global:SelectedModelFileName)
+    }
 
     $GeneratedPicture = (Invoke-TxtToImage -Prompt $Prompt -NegativePrompt $NegativePrompt -Parameters $Parameters -RequestIP $RequestIP)
-    Set-Content -Value $GeneratedPicture -Path ("$PSScriptRoot\txttoimg"+(Get-Date -Format FileDateTime)+".png")
+    Start-Process -FilePath $GeneratedPicture
 }
 
 function Invoke-PromptGenerator {
@@ -521,6 +627,15 @@ function Invoke-PromptGenerator {
         [switch]
         $API
     )
+    if($Global:TemplatePath -notlike "")
+    {
+        $SDVersion = Read-Host -Prompt "Version de StableDiffusion pour la génération ? (SD/XL(T))"
+        While($SDVersion -notlike "SD" -and $SDVersion -notlike "XL" -and $SDVersion -notlike "XLT")
+        {$SDVersion = Read-Host -Prompt "Version de StableDiffusion pour la génération ? (SD/XL(T))"}
+        $GeneratedPicture = Invoke-FastSDAPI -SDVersion $SDVersion
+        Start-Process -FilePath $GeneratedPicture
+        return
+    }
     Get-PromptComponents
     $FormatedPrompt = Format-PromptComponents
 
@@ -533,11 +648,11 @@ function Invoke-PromptGenerator {
     }
     if($PSBoundParameters.ContainsKey('API'))
     {
-        $SDVersion = Read-Host -Prompt "Version de StableDiffusion pour la génération ? (SD/XL)"
-        While($SDVersion -notlike "SD" -and $SDVersion -notlike "XL")
-        {$SDVersion = Read-Host -Prompt "Version de StableDiffusion pour la génération ? (SD/XL)"}
-        $UserSettings = Get-UserPromptInput -Generation
-        Invoke-SDAPI -Prompt $Global:FinalPromptComposition -NegativePrompt $Global:FinalNegativePromptComposition -Parameters $UserSettings -SDVersion $SDVersion
+        $SDVersion = Read-Host -Prompt "Version de StableDiffusion pour la génération ? (SD/XL(T))"
+        While($SDVersion -notlike "SD" -and $SDVersion -notlike "XL" -and $SDVersion -notlike "XLT")
+        {$SDVersion = Read-Host -Prompt "Version de StableDiffusion pour la génération ? (SD/XL(T))"}
+        $Global:UserSettings = Get-UserPromptInput -Generation
+        Invoke-SDAPI -Prompt $Global:FinalPromptComposition -NegativePrompt $Global:FinalNegativePromptComposition -Parameters $Global:UserSettings -SDVersion $SDVersion
     }
 }
 ##################################################################################################

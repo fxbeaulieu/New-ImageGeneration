@@ -1,0 +1,16 @@
+{
+  "prompt": "",
+  "negative_prompt": "",
+  "seed": 669,
+  "batch_size": 1,
+  "n_iter": 1,
+  "steps": 20,
+  "cfg_scale": 4,
+  "width": 1024,
+  "height": 1024,
+  "restore_faces": true,
+  "tiling": false,
+  "sampler_index": "DPM++ 2M Karras",
+  "send_images": true,
+  "save_images": true
+}
