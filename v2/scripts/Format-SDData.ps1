@@ -80,7 +80,7 @@ $Global:BasicPositive = "4k, 8k, uhd, hd, very detailed, high level of detail, r
 $Global:DetailsEmbeddings = "fFaceDetail EyeDetail OverallDetail"
 $Global:NegativeEmbeddings = "HandNeg-neg CyberRealistic_Negative-neg easynegative ng_deepnegative_v1_75t"
 
-$TemplateTxtToImg = Get-Content -Path "$PSScriptRoot\templates\txttoimg-request-body.txt" | ConvertFrom-Json
+$TemplateTxtToImg = Get-Content -Path "$PSScriptRoot\..\templates\txttoimg-request-body.txt" | ConvertFrom-Json
 
 $SetCheckpointArguments = "-File $PSSCriptRoot\Set-Checkpoint.ps1 -InputCKPT $InputCKPT -Instance $Instance"
 Start-Process 'pwsh.exe' -NoNewWindow -Wait -ArgumentList $SetCheckpointArguments

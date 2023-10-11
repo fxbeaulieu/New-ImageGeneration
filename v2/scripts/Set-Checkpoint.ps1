@@ -8,7 +8,7 @@ param (
     $Instance
 )
 
-$Global:SetModelsOptions=(Get-Content -Path "$PSScriptRoot\templates\set-checkpoint-body.txt")
+$Global:SetModelsOptions=(Get-Content -Path "$PSScriptRoot\..\templates\set-checkpoint-body.txt")
 
 if($Instance -eq  'XL')
 {
