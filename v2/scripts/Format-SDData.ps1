@@ -72,7 +72,7 @@ param (
 )
 
 $Global:OutputDirectory = "$ENV:USERPROFILE\Documents\sd_generation_parameters_saved"
-$Global:StylesDetails = Get-Content -Path "$PSScriptRoot\lists\styles.json" | ConvertFrom-Json
+$Global:StylesDetails = Get-Content -Path "$PSScriptRoot\..\lists\styles.json" | ConvertFrom-Json
 
 $Global:BasicNegative = "mutation, deformed, deformed iris, duplicate, morbid, mutilated, disfigured, poorly drawn hand, poorly drawn face, bad proportions, gross proportions, extra limbs, cloned face, long neck, malformed limbs, missing arm, missing leg, extra arm, extra leg, fused fingers, too many fingers, extra fingers, mutated hands, blurry, bad anatomy, out of frame, contortionist, contorted limbs, exaggerated features, disproportionate, twisted posture, unnatural pose, disconnected, disproportionate, warped, misshapen, out of scale, "
 $Global:BasicPositive = "4k, 8k, uhd, hd, very detailed, high level of detail, rendered as masterpiece, very smooth, sharp, global illumination, ray tracing, stunning, masterpiece, best quality, "

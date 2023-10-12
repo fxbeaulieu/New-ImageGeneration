@@ -22,21 +22,29 @@ function Compare-Progress
         return $false
     }
 }
+$CompteurDeBoucle = 0
 
 Start-Sleep -Seconds 15
 $Global:CurrentProgression = (((Invoke-WebRequest -Uri $Global:URLGetStatus |Select-Object Content).Content | ConvertFrom-Json) | Select-Object -Property progress).progress
+
 While(Compare-Progress -eq $True)
 {
     $Global:CurrentProgression = (((Invoke-WebRequest -Uri $Global:URLGetStatus |Select-Object Content).Content | ConvertFrom-Json) | Select-Object -Property progress).progress
-    if ($Global:CurrentProgression -like "0.19","0,20","0,21" -or $Global:CurrentProgression -like "0.49","0.50","0.51" -or $Global:CurrentProgression -like "0.79","0.80","0.81")
+
+    if ($CompteurDeBoucle % 10 -eq 0)
     {
-    $CurrentPreview = (((Invoke-WebRequest -Uri $Global:URLGetStatus |Select-Object Content).Content | ConvertFrom-Json) | Select-Object -property current_image).current_image
-    $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($CurrentPreview))
-    $PreviewPicturePath = "$ENV:TEMP\GenerationPreviewTMP.png"
-    $Picture.Save("$PreviewPicturePath")
-    Start-Process -FilePath $PreviewPicturePath
+        $CurrentPreview = (((Invoke-WebRequest -Uri $Global:URLGetStatus |Select-Object Content).Content | ConvertFrom-Json) | Select-Object -property current_image).current_image
+        $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($CurrentPreview))
+        $PreviewPicturePath = "$ENV:TEMP\GenerationPreviewTMP.png"
+        $Picture.Save("$PreviewPicturePath")
+        Start-Process -FilePath $PreviewPicturePath -WorkingDirectory $ENV:TEMP
     }
+
     Start-Sleep -Seconds 3
+    Clear-Host
+
     Write-Host ("{0:N2}" -f $Global:CurrentProgression)
+
+    ++$CompteurDeBoucle
 }
 Write-Host "Pas en cours de génération"

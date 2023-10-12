@@ -54,7 +54,7 @@ layout = [
 			"StableDiffusion API Generation Parameters", font=("Courier", 16, "bold")
 		)],
 		[sg.Submit("Générer l'image", pad=15, key='generate'),sg.FileBrowse('Sélectionner un template',pad=15,target='template_file'),sg.Input(key='template_file')],
-		[sg.Button("Changer de checkpoint", pad=15, key='set_model'),sg.Button("Recharger les listes de checkpoints", pad=15, key='refresh')]
+		[sg.Button("Changer de checkpoint", pad=15, key='set_model')]
 	],
 	[
 		sg.Column(
@@ -330,29 +330,43 @@ layout = [
 
 window = sg.Window("StableDiffusion Parameters Generator", layout, font=("Courier", 13),icon=appicon, finalize=True)
 while True:
-	event, values = window.read()
-	if event == sg.WIN_CLOSED:
-		break
-	elif event == 'refresh':
+	global xl_model_names
+	global sd_model_names
+	global xlt_model_names
+	global response_xl_models
+	global response_sd_models
+	global response_xlt_models
+	try:
+		response_xl_models
+	except NameError:
 		try:
 			response_xl_models = requests.get(url_get_xl_models)
 			xl_models = json.loads(response_xl_models.content.decode('utf-8'))
 			xl_model_names = [model['model_name'] for model in xl_models]
 		except requests.ConnectionError:
 			xl_model_names = "Offline"
+	try:
+		response_sd_models
+	except NameError:
 		try:
 			response_sd_models = requests.get(url_get_sd_models)
 			sd_models = json.loads(response_sd_models.content.decode('utf-8'))
 			sd_model_names = [model['model_name'] for model in sd_models]
 		except requests.ConnectionError:
 			sd_model_names = "Offline"
+	try:
+		response_xlt_models
+	except NameError:
 		try:
 			response_xlt_models = requests.get(url_get_xlt_models)
-			xlt_models = json.loads(response_xlt_models.content.decode('uft-8'))
+			xlt_models = json.loads(response_xlt_models.content.decode('utf-8'))
 			xlt_model_names = [model['model_name'] for model in xlt_models]
 		except requests.ConnectionError:
 			xlt_model_names = "Offline"
-		# Mettre à jour les valeurs du deuxième sg.Combo en fonction de la sélection de l'utilisateur
+	event, values = window.read()
+	if event == sg.WIN_CLOSED:
+		break
+	elif event == 'instance':
 		if values['instance'] == 'XL':
 			selected_models = xl_model_names
 			window['checkpoint'].update(values=selected_models)

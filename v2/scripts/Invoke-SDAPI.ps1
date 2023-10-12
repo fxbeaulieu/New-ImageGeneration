@@ -26,7 +26,8 @@ switch ($Instance) {
 }
 
 $GenerationTemplateData = Get-Content -Path $GenerationTemplate -Force | ConvertFrom-Json
-$GenerationStatusArguments = "-File $PSScriptRoot\Get-Progress.ps1 -Instance $Instance"
+$ProgressionScript = "$PSScriptRoot\Get-Progress.ps1"
+$GenerationStatusArguments = "-File $ProgressionScript -Instance $Instance"
 if($NbImg -ne 1)
 {
     $GenerationTemplateData.seed = -1
@@ -39,7 +40,7 @@ if($NbImg -ne 1)
         $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($Base64Picture))
         $OutputPicturePath = ($Global:PicOutputDirectory+"\"+$Instance+$ExportFileDate+".png")
         $Picture.Save($OutputPicturePath)
-        Start-Process -File $OutputPicturePath
+        Start-Process -File $OutputPicturePath -WorkingDirectory $Global:PicOutputDirectory
         ++$ImgBeingGenerated
     }
     until
@@ -55,5 +56,5 @@ else
     $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($Base64Picture))
     $OutputPicturePath = ($Global:PicOutputDirectory+"\"+$SDVersion+$ExportFileDate+".png")
     $Picture.Save($OutputPicturePath)
-    Start-Process -File $OutputPicturePath
+    Start-Process -File $OutputPicturePath -WorkingDirectory $Global:PicOutputDirectory
 }
