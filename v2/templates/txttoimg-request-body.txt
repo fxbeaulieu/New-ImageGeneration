@@ -12,5 +12,5 @@
   "tiling": false,
   "sampler_index": "DPM++ 2M Karras",
   "send_images": true,
-  "save_images": false
+  "save_images": true
 }

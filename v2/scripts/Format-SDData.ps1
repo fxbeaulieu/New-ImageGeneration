@@ -208,7 +208,7 @@ function Format-PromptComponents {
     if($null -eq $Artists)
     {$Artists = ""}
     else{[string]$ArtistsToPrompt = Format-ArtistsToPrompt -Artists $Artists}
-    $StyledNegativePrompt = ($SelectedArtStyleNegativePrompt+", "+$Global:PromptParameters.NegativePrompt+", ")
+    $StyledNegativePrompt = ($SelectedArtStyleNegativePrompt+", "+$NegativePrompt+", ")
     $FullUserPrompt = ($ConceptualKeywordsToPrompt+$DirectionKeywordToPrompt+$MoodKeywordsToPrompt+$StyledPrompt+$ArtistsToPrompt)
     Return $FullUserPrompt,$StyledNegativePrompt
 }
