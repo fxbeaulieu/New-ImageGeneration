@@ -1,16 +1,8 @@
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory)]
-    [string]
-    $Instance
 )
 
-switch ($Instance) {
-    XL { $Global:URLGetStatus = "http://192.168.4.254:64640/sdapi/v1/progress?skip_current_image=false" }
-    SD { $Global:URLGetStatus = "http://localhost:64640/sdapi/v1/progress?skip_current_image=false" }
-    XLT { $Global:URLGetStatus = "http://localhost:64669/sdapi/v1/progress?skip_current_image=false" }
-    Default {}
-}
+$Global:URLGetStatus = "http://localhost:64640/sdapi/v1/progress?skip_current_image=false"
 
 function Compare-Progress
 {

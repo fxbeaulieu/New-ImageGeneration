@@ -2,9 +2,6 @@
 param (
     [Parameter(Mandatory)]
     [string]
-    $Instance,
-    [Parameter(Mandatory)]
-    [string]
     $NbImg,
     [Parameter(Mandatory)]
     [string]
@@ -71,7 +68,7 @@ param (
     $Mood3
 )
 
-$Global:OutputDirectory = "$ENV:USERPROFILE\Documents\sd_generation_parameters_saved"
+$Global:OutputDirectory = "$PSScriptRoot\..\sd_generation_parameters_saved"
 $Global:StylesDetails = Get-Content -Path "$PSScriptRoot\..\lists\styles.json" | ConvertFrom-Json
 
 $Global:BasicNegative = "mutation, deformed, deformed iris, duplicate, morbid, mutilated, disfigured, poorly drawn hand, poorly drawn face, bad proportions, gross proportions, extra limbs, cloned face, long neck, malformed limbs, missing arm, missing leg, extra arm, extra leg, fused fingers, too many fingers, extra fingers, mutated hands, blurry, bad anatomy, out of frame, contortionist, contorted limbs, exaggerated features, disproportionate, twisted posture, unnatural pose, disconnected, disproportionate, warped, misshapen, out of scale, "
@@ -80,9 +77,20 @@ $Global:BasicPositive = "4k, 8k, uhd, hd, very detailed, high level of detail, r
 $Global:DetailsEmbeddings = "fFaceDetail EyeDetail OverallDetail"
 $Global:NegativeEmbeddings = "HandNeg-neg CyberRealistic_Negative-neg easynegative ng_deepnegative_v1_75t"
 
+$SDXLModels = Get-Content -Path "$PSScriptRoot\..\lists\XL_models.txt"
+$TurboModels = Get-Content -Path "$PSScriptRoot\..\lists\Turbo_models.txt"
+
 $TemplateTxtToImg = Get-Content -Path "$PSScriptRoot\..\templates\txttoimg-request-body.txt" | ConvertFrom-Json
 
-$SetCheckpointArguments = "-File $PSSCriptRoot\Set-Checkpoint.ps1 -InputCKPT $InputCKPT -Instance $Instance"
+if($SDXLModels -contains $InputCKPT){
+    $Model = "XL"
+} elseif($TurboModels -contains $InputCKPT){
+    $Model = "Turbo"
+} else{
+    $Model = "SD"
+}
+
+$SetCheckpointArguments = "-File $PSSCriptRoot\Set-Checkpoint.ps1 -InputCKPT $InputCKPT"
 Start-Process 'pwsh.exe' -NoNewWindow -Wait -ArgumentList $SetCheckpointArguments
 
 $Artists = $Artist1, $Artist2, $Artist3
@@ -215,27 +223,54 @@ function Format-PromptComponents {
 
 $FormatedPrompt = Format-PromptComponents
 
-if($Instance -ne 'SD')
+if($Model -ne 'SD')
 {
     [string]$Global:FinalPromptComposition = ($FormatedPrompt[0]+$Global:BasicPositive)
     [string]$Global:FinalNegativePromptComposition = ($FormatedPrompt[1]+$Global:BasicNegative)
 }
-if($Instance -eq 'SD')
+if($Model -eq 'SD')
 {
     [string]$Global:FinalPromptComposition = ($FormatedPrompt[0]+$Global:BasicPositive+$Global:DetailsEmbeddings)
     [string]$Global:FinalNegativePromptComposition = ($FormatedPrompt[1]+$Global:BasicNegative+$Global:NegativeEmbeddings)
 }
-
+if ($Model -eq 'Turbo')
+{
+    $TemplateTxtToImg.cfg_scale = 2
+    $TemplateTxtToImg.steps = 6
+    $TemplateTxtToImg.sampler_index = 'DPM++ SDE Karras'
+}
+else {
+    $TemplateTxtToImg.cfg_scale = $Attention
+    $TemplateTxtToImg.steps = $Steps
+    if($InputCKPT -eq 'zavychromaxl_v60'){
+        $TemplateTxtToImg.sampler_index = 'DPM++ 3M SDE Exponential'
+    }
+    else {
+        $TemplateTxtToImg.sampler_index = $Sampler
+    }
+}
 $TemplateTxtToImg.n_iter = $NbImg
 $TemplateTxtToImg.prompt = $Global:FinalPromptComposition
 $TemplateTxtToImg.negative_prompt = $Global:FinalNegativePromptComposition
 $TemplateTxtToImg.seed = $Seed
-$TemplateTxtToImg.sampler_index = $Sampler
-$TemplateTxtToImg.cfg_scale = $Attention
-$TemplateTxtToImg.steps = $Steps
 $TemplateTxtToImg.width = $Width
 $TemplateTxtToImg.height = $Height
-$TemplateTxtToImg.restore_faces = $RestoreFaces
+if($RestoreFaces -eq 'True')
+{
+    $ADetailerActivationString = "`"ADetailer`": {
+        `"args`": [
+                true,
+                false,
+                {
+                `"ad_model`": `"face_yolov8n`"
+                }
+            ]
+        }
+    }"
+    $TemplateTxtToImg.alwayson_scripts = $TemplateTxtToImg.alwayson_scripts.toString().Replace('"ADETAIL":""',$ADetailerActivationString)
+} else {
+    $TemplateTxtToImg.alwayson_scripts = $TemplateTxtToImg.alwayson_scripts.toSting.Replace('"ADETAIL":""','')
+}
 
 if (! (Test-Path -Path $Global:OutputDirectory))
 {
@@ -247,5 +282,5 @@ $TemplateExportedPath = "$Global:OutputDirectory\SD_API_template_$ExportFileDate
 Set-Content -Path $TemplateExportedPath -Value ($templatetxttoimg|ConvertTo-Json) -Force
 Write-Host -ForegroundColor Cyan "Template de génération sauvegardé dans le fichier $TemplateExportedPath"
 
-$InvokeSDAPIArguments = "-File $PSSCriptRoot\Invoke-SDAPI.ps1 -Instance $Instance -NbImg $NbImg -GenerationTemplate $Global:TemplateExportedPath"
+$InvokeSDAPIArguments = "-File $PSScriptRoot\Invoke-SDAPI.ps1 -NbImg $NbImg -GenerationTemplate $Global:TemplateExportedPath"
 Start-Process 'pwsh.exe' -NoNewWindow -Wait -ArgumentList $InvokeSDAPIArguments

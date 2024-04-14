@@ -1,9 +1,6 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory)]
-    [string]
-    $Instance,
-    [Parameter(Mandatory)]
     [int]
     $NbImg,
     [Parameter(Mandatory)]
@@ -11,23 +8,18 @@ param (
     $GenerationTemplate
 )
 
-$Global:PicOutputDirectory = "$ENV:USERPROFILE\Pictures\SDMonster"
+$Global:PicOutputDirectory = "$PSScriptRoot\..\SDMonster_output"
 
 if (! (Test-Path -Path $Global:PicOutputDirectory))
 {
     New-Item -Path (Split-Path -Path $Global:PicOutputDirectory -Parent) -Name (Split-Path -Path $Global:PicOutputDirectory -LeafBase) -ItemType Directory -Force
 }
 
-switch ($Instance) {
-    XL { $TextGenerationURL = 'http://192.168.4.254:64640/sdapi/v1/txt2img' }
-    SD { $TextGenerationURL = 'http://localhost:64640/sdapi/v1/txt2img' }
-    XLT { $TextGenerationURL = 'http://localhost:64669/sdapi/v1/txt2img' }
-    Default {}
-}
+$TextGenerationURL = 'http://localhost:64640/sdapi/v1/txt2img'
 
 $GenerationTemplateData = Get-Content -Path $GenerationTemplate -Force | ConvertFrom-Json
 $ProgressionScript = "$PSScriptRoot\Get-Progress.ps1"
-$GenerationStatusArguments = "-File $ProgressionScript -Instance $Instance"
+$GenerationStatusArguments = "-File $ProgressionScript"
 if($NbImg -ne 1)
 {
     $GenerationTemplateData.seed = -1
@@ -38,7 +30,7 @@ if($NbImg -ne 1)
         $Base64Picture = (((Invoke-WebRequest -Uri $TextGenerationURL -Method Post -ContentType "application/json" -Body ($GenerationTemplateData|ConvertTo-Json)).Content)|ConvertFrom-Json).images
         $ExportFileDate = Get-Date -Format FileDateTime
         $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($Base64Picture))
-        $OutputPicturePath = ($Global:PicOutputDirectory+"\"+$Instance+$ExportFileDate+".png")
+        $OutputPicturePath = ($Global:PicOutputDirectory+"\"+$ExportFileDate+".png")
         $Picture.Save($OutputPicturePath)
         Start-Process -File $OutputPicturePath -WorkingDirectory $Global:PicOutputDirectory
         ++$ImgBeingGenerated
@@ -56,5 +48,5 @@ else
     $Picture = [Drawing.Bitmap]::FromStream([IO.MemoryStream][Convert]::FromBase64String($Base64Picture))
     $OutputPicturePath = ($Global:PicOutputDirectory+"\"+$SDVersion+$ExportFileDate+".png")
     $Picture.Save($OutputPicturePath)
-    Start-Process -File $OutputPicturePath -WorkingDirectory $Global:PicOutputDirectory
+    Start-Process -File "$OutputPicturePath" -WorkingDirectory "$Global:PicOutputDirectory"
 }

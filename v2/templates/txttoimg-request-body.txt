@@ -8,9 +8,11 @@
   "cfg_scale": 4,
   "width": 1024,
   "height": 1024,
-  "restore_faces": true,
   "tiling": false,
   "sampler_index": "DPM++ 2M Karras",
   "send_images": true,
-  "save_images": true
+  "save_images": true,
+  "alwayson_scripts": {
+      "ADETAIL":""
+    }
 }
